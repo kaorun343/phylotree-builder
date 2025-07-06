@@ -13,6 +13,16 @@ export interface TreeNode {
 
 export interface PhylogeneticTree {
   id: string;
-  nodes: Record<string, TreeNode>;
+  nodes: Map<string, TreeNode>;
   rootId: string;
+}
+
+export interface TreePosition {
+  x: number;
+  y: number;
+}
+
+export interface VisualNode extends TreeNode {
+  position: TreePosition;
+  depth: number;
 }

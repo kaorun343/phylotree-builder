@@ -13,6 +13,14 @@
 .branch {
   stroke: #666;
   stroke-width: 2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.branch:hover,
+.branch.branch-hover {
+  stroke: #ff9800;
+  stroke-width: 4;
 }
 
 .branch-length {

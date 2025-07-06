@@ -11,7 +11,11 @@
               [attr.x2]="child.position.x"
               [attr.y2]="child.position.y"
               class="branch"
-              [attr.stroke-width]="2"
+              [class.branch-hover]="isEdgeHovered()(child.id)"
+              [attr.stroke-width]="isEdgeHovered()(child.id) ? 4 : 2"
+              (click)="onEdgeClick(child)"
+              (mouseenter)="onEdgeHover(child)"
+              (mouseleave)="onEdgeLeave()"
             ></line>
           </ng-container>
         </g>
@@ -38,7 +42,7 @@
           [attr.class]="getNodeClasses()(node)"
           (click)="onNodeClick(node)"
           (mouseenter)="onNodeHover(node)"
-          (mouseleave)="onNodeLeave(node)">
+          (mouseleave)="onNodeLeave()">
         </circle>
 
         <!-- Node label -->
