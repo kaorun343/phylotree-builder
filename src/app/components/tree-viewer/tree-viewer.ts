@@ -1,15 +1,8 @@
-import {
-  Component,
-  OnInit,
-  signal,
-  computed,
-  effect,
-  inject,
-} from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeService } from '../../services/tree.service';
 import { SvgSettingsService } from '../../services/svg-settings.service';
-import { PhylogeneticTree, VisualNode } from '../../models/tree.types';
+import { VisualNode } from '../../models/tree.types';
 
 @Component({
   selector: 'app-tree-viewer',
@@ -17,13 +10,13 @@ import { PhylogeneticTree, VisualNode } from '../../models/tree.types';
   templateUrl: './tree-viewer.html',
   styleUrl: './tree-viewer.css',
 })
-export class TreeViewer implements OnInit {
+export class TreeViewer {
   // Injected services
   private treeService = inject(TreeService);
   private svgSettingsService = inject(SvgSettingsService);
 
   // Signal-based state
-  tree = signal<PhylogeneticTree | null>(null);
+  tree = computed(() => this.treeService.currentTree());
   selectedNodeId = signal<string | null>(null);
   hoveredNodeId = signal<string | null>(null);
   hoveredEdgeId = signal<string | null>(null);
@@ -35,27 +28,12 @@ export class TreeViewer implements OnInit {
   // Computed signals
   visualNodes = computed(() => {
     const currentTree = this.tree();
-    if (!currentTree) return [];
-
     return this.treeService.calculateNodePositions(
       currentTree,
       this.svgWidth(),
       this.svgHeight()
     );
   });
-
-  constructor() {
-    // Effect to sync with tree service
-    effect(() => {
-      this.tree.set(this.treeService.currentTree());
-    });
-  }
-
-  ngOnInit(): void {
-    // Load sample tree for demonstration
-    const sampleTree = this.treeService.createSampleTree();
-    this.treeService.currentTree.set(sampleTree);
-  }
 
   // Computed helper methods
   getNodeById = computed(() => {
