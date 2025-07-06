@@ -137,6 +137,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/cdk@npm:20.0.5":
+  version: 20.0.5
+  resolution: "@angular/cdk@npm:20.0.5"
+  dependencies:
+    parse5: "npm:^7.1.2"
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@angular/common": ^20.0.0 || ^21.0.0
+    "@angular/core": ^20.0.0 || ^21.0.0
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: 10c0/a83bea6dc89ca08daa2f314c2e714cb9d614287d4c9c3b235f5372914bc50ee929376b3a6d9f58b0045a7f1b888372dfe2a953c55fbd86efe17faae0bf13f7dc
+  languageName: node
+  linkType: hard
+
 "@angular/cli@npm:^20.0.5":
   version: 20.0.5
   resolution: "@angular/cli@npm:20.0.5"
@@ -238,6 +252,22 @@ __metadata:
     "@angular/platform-browser": 20.0.6
     rxjs: ^6.5.3 || ^7.4.0
   checksum: 10c0/e8647893170aa15452c7d9d54ee16e44f2e146da3941041b88634d0e7b9b2eae90c64f30dc3dcfbae4c5259e3dfd153d139eac9673247a3a4814fd0765aef8fa
+  languageName: node
+  linkType: hard
+
+"@angular/material@npm:20.0.5":
+  version: 20.0.5
+  resolution: "@angular/material@npm:20.0.5"
+  dependencies:
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@angular/cdk": 20.0.5
+    "@angular/common": ^20.0.0 || ^21.0.0
+    "@angular/core": ^20.0.0 || ^21.0.0
+    "@angular/forms": ^20.0.0 || ^21.0.0
+    "@angular/platform-browser": ^20.0.0 || ^21.0.0
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: 10c0/0a4ee9c510621847aa9b0cfff3f5a399ff48d227eeefc06c19c4b5e449e179b24030ad7c4c7a25f3ca2389640996035401fc909a028a3dd1d7241fdc4b3e0ad7
   languageName: node
   linkType: hard
 
@@ -4449,7 +4479,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"parse5@npm:^7.0.0":
+"parse5@npm:^7.0.0, parse5@npm:^7.1.2":
   version: 7.3.0
   resolution: "parse5@npm:7.3.0"
   dependencies:
@@ -4501,12 +4531,14 @@ __metadata:
   resolution: "phylotree-builder@workspace:."
   dependencies:
     "@angular/build": "npm:^20.0.5"
+    "@angular/cdk": "npm:20.0.5"
     "@angular/cli": "npm:^20.0.5"
     "@angular/common": "npm:^20.0.0"
     "@angular/compiler": "npm:^20.0.0"
     "@angular/compiler-cli": "npm:^20.0.0"
     "@angular/core": "npm:^20.0.0"
     "@angular/forms": "npm:^20.0.0"
+    "@angular/material": "npm:20.0.5"
     "@angular/platform-browser": "npm:^20.0.0"
     "@angular/router": "npm:^20.0.0"
     "@types/jasmine": "npm:~5.1.0"
