@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { TreeService } from './tree.service';
-import { PhylogeneticTree } from '../models/tree.types';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -45,151 +44,16 @@ describe('TreeService', () => {
     });
   });
 
-  describe('calculateNodePositions', () => {
-    let testTree: PhylogeneticTree;
-
-    beforeEach(() => {
-      testTree = service.createSampleTree();
-    });
-
-    it('should calculate positions for all nodes', () => {
-      const visualNodes = service.calculateNodePositions(testTree, 800, 600);
-
-      expect(visualNodes.length).toBe(3);
-
-      // Root node should be at depth 0
-      const rootVisual = visualNodes.find((n) => n.id === 'root');
-      expect(rootVisual).toBeDefined();
-      expect(rootVisual!.depth).toBe(0);
-      expect(rootVisual!.position.x).toBe(50); // (0/1) * (800-100) + 50
-
-      // Leaf nodes should be at depth 1
-      const nodeAVisual = visualNodes.find((n) => n.id === 'A');
-      const nodeBVisual = visualNodes.find((n) => n.id === 'B');
-
-      expect(nodeAVisual).toBeDefined();
-      expect(nodeBVisual).toBeDefined();
-      expect(nodeAVisual!.depth).toBe(1);
-      expect(nodeBVisual!.depth).toBe(1);
-      expect(nodeAVisual!.position.x).toBe(750); // (1/1) * (800-100) + 50
-      expect(nodeBVisual!.position.x).toBe(750);
-
-      // Y positions should be different for nodes at same depth
-      expect(nodeAVisual!.position.y).not.toBe(nodeBVisual!.position.y);
-    });
-
-    it('should handle single node tree', () => {
-      const singleNodeTree: PhylogeneticTree = {
-        id: 'single',
-        rootId: 'only',
-        nodes: new Map([
-          [
-            'only',
-            {
-              id: 'only',
-              name: 'only',
-              children: [],
-              isLeaf: true,
-            },
-          ],
-        ]),
-      };
-
-      const visualNodes = service.calculateNodePositions(
-        singleNodeTree,
-        800,
-        600
-      );
-
-      expect(visualNodes.length).toBe(1);
-      const onlyNode = visualNodes[0];
-      expect(onlyNode.depth).toBe(0);
-      expect(onlyNode.position.x).toBe(50);
-      expect(onlyNode.position.y).toBe(300); // 600 / (1 + 1)
-    });
-
-    it('should handle larger tree with multiple levels', () => {
-      // Create a more complex tree: root -> (internal1, C) where internal1 -> (A, B)
-      const complexTree: PhylogeneticTree = {
-        id: 'complex',
-        rootId: 'root',
-        nodes: new Map([
-          ['root', { id: 'root', children: ['internal1', 'C'], isLeaf: false }],
-          [
-            'internal1',
-            {
-              id: 'internal1',
-              parent: 'root',
-              children: ['A', 'B'],
-              isLeaf: false,
-              branchLength: 0.1,
-            },
-          ],
-          [
-            'A',
-            {
-              id: 'A',
-              name: 'A',
-              parent: 'internal1',
-              children: [],
-              isLeaf: true,
-              branchLength: 0.05,
-            },
-          ],
-          [
-            'B',
-            {
-              id: 'B',
-              name: 'B',
-              parent: 'internal1',
-              children: [],
-              isLeaf: true,
-              branchLength: 0.08,
-            },
-          ],
-          [
-            'C',
-            {
-              id: 'C',
-              name: 'C',
-              parent: 'root',
-              children: [],
-              isLeaf: true,
-              branchLength: 0.15,
-            },
-          ],
-        ]),
-      };
-
-      const visualNodes = service.calculateNodePositions(complexTree, 800, 600);
-
-      expect(visualNodes.length).toBe(5);
-
-      // Check depths
-      const rootVisual = visualNodes.find((n) => n.id === 'root');
-      const internal1Visual = visualNodes.find((n) => n.id === 'internal1');
-      const aVisual = visualNodes.find((n) => n.id === 'A');
-      const bVisual = visualNodes.find((n) => n.id === 'B');
-      const cVisual = visualNodes.find((n) => n.id === 'C');
-
-      expect(rootVisual!.depth).toBe(0);
-      expect(internal1Visual!.depth).toBe(1);
-      expect(cVisual!.depth).toBe(1);
-      expect(aVisual!.depth).toBe(2);
-      expect(bVisual!.depth).toBe(2);
-    });
-  });
-
   describe('addLeafNode', () => {
-    let testTree: PhylogeneticTree;
-
     beforeEach(() => {
-      testTree = service.createSampleTree();
-      service.currentTree.set(testTree);
+      // Service already initializes with sample tree
+      // Reset to a fresh sample tree for each test
+      const freshTree = service.createSampleTree();
+      service.currentTree.set(freshTree);
     });
 
     it('should add a new leaf node and internal node', () => {
-      const originalSize = testTree.nodes.size;
+      const originalSize = service.currentTree().nodes.size;
 
       service.addLeafNode('A');
 
@@ -206,7 +70,7 @@ describe('TreeService', () => {
     });
 
     it('should split branch lengths correctly', () => {
-      const originalNodeA = testTree.nodes.get('A');
+      const originalNodeA = service.currentTree().nodes.get('A');
       const originalBranchLength = originalNodeA!.branchLength!;
 
       service.addLeafNode('A');
@@ -248,7 +112,7 @@ describe('TreeService', () => {
     });
 
     it('should handle non-existent node gracefully', () => {
-      const originalSize = testTree.nodes.size;
+      const originalSize = service.currentTree().nodes.size;
 
       service.addLeafNode('nonexistent');
 
@@ -267,27 +131,32 @@ describe('TreeService', () => {
   });
 
   describe('reactive behavior', () => {
-    it('should update tree signal when loading', () => {
-      const tree = service.createSampleTree();
+    it('should initialize with sample tree', () => {
+      const currentTree = service.currentTree();
 
-      expect(service.currentTree()).toBeNull();
+      expect(currentTree).toBeDefined();
+      expect(currentTree.id).toBe('sample-tree');
+      expect(currentTree.nodes.size).toBe(3);
+    });
 
-      service.currentTree.set(tree);
+    it('should update tree signal when setting new tree', () => {
+      const newTree = service.createSampleTree();
+      newTree.id = 'new-tree';
 
-      expect(service.currentTree()).toBe(tree);
+      service.currentTree.set(newTree);
+
+      expect(service.currentTree()).toBe(newTree);
+      expect(service.currentTree().id).toBe('new-tree');
     });
 
     it('should update tree signal when adding leaf nodes', () => {
-      const tree = service.createSampleTree();
-      service.currentTree.set(tree);
-
-      const originalSize = service.currentTree()!.nodes.size;
+      const originalSize = service.currentTree().nodes.size;
 
       service.addLeafNode('A');
 
       const updatedTree = service.currentTree();
       expect(updatedTree).toBeDefined();
-      expect(updatedTree!.nodes.size).toBe(originalSize + 2); // Original 3 + 2 new
+      expect(updatedTree.nodes.size).toBe(originalSize + 2); // Original 3 + 2 new
     });
   });
 });

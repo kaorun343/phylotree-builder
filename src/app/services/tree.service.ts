@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { PhylogeneticTree, TreeNode, VisualNode } from '../models/tree.types';
+import { PhylogeneticTree, TreeNode } from '../models/tree.types';
 
 /**
  * Minimal tree service for managing phylogenetic tree state
@@ -122,63 +122,5 @@ export class TreeService {
       nodes,
       rootId: 'root',
     };
-  }
-
-  calculateNodePositions(
-    tree: PhylogeneticTree,
-    svgWidth: number,
-    svgHeight: number
-  ): VisualNode[] {
-    // Calculate depth for each node
-    const depths = this.calculateDepths(tree);
-    const maxDepth = Math.max(...depths.values(), 1);
-
-    // Group nodes by depth (for vertical positioning)
-    const nodesByDepth = new Map<number, string[]>();
-    depths.forEach((depth, nodeId) => {
-      nodesByDepth.get(depth)?.push(nodeId) ??
-        nodesByDepth.set(depth, [nodeId]);
-    });
-
-    const visualNodes: VisualNode[] = [];
-
-    tree.nodes.forEach((node, nodeId) => {
-      const depth = depths.get(nodeId)!;
-      const nodesAtDepth = nodesByDepth.get(depth)!;
-      const indexAtDepth = nodesAtDepth.indexOf(nodeId);
-
-      // Calculate positions
-      const x = (depth / maxDepth) * (svgWidth - 100) + 50;
-      const spacing = svgHeight / (nodesAtDepth.length + 1);
-      const y = spacing * (indexAtDepth + 1);
-
-      visualNodes.push({
-        ...node,
-        position: { x, y },
-        depth,
-      });
-    });
-
-    return visualNodes;
-  }
-
-  private calculateDepths(tree: PhylogeneticTree): Map<string, number> {
-    const depths = new Map<string, number>();
-    const visited = new Set<string>();
-
-    const calculateDepth = (nodeId: string, currentDepth: number): void => {
-      if (visited.has(nodeId)) return;
-      visited.add(nodeId);
-
-      depths.set(nodeId, currentDepth);
-      const node = tree.nodes.get(nodeId);
-
-      node?.children.forEach((childId) => {
-        calculateDepth(childId, currentDepth + 1);
-      });
-    };
-
-    calculateDepth(tree.rootId, 0);
-    return depths;
   }
 }

@@ -1,6 +1,7 @@
 import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeService } from '../../services/tree.service';
+import { TreeViewerService } from '../../services/tree-viewer.service';
 import { SvgSettingsService } from '../../services/svg-settings.service';
 import { VisualNode } from '../../models/tree.types';
 
@@ -13,6 +14,7 @@ import { VisualNode } from '../../models/tree.types';
 export class TreeViewer {
   // Injected services
   private treeService = inject(TreeService);
+  private treeViewerService = inject(TreeViewerService);
   private svgSettingsService = inject(SvgSettingsService);
 
   // Signal-based state
@@ -28,11 +30,7 @@ export class TreeViewer {
   // Computed signals
   visualNodes = computed(() => {
     const currentTree = this.tree();
-    return this.treeService.calculateNodePositions(
-      currentTree,
-      this.svgWidth(),
-      this.svgHeight()
-    );
+    return this.treeViewerService.calculateNodePositions(currentTree);
   });
 
   // Computed helper methods
