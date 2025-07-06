@@ -147,10 +147,8 @@ export class TreeService {
     // Group nodes by depth (for vertical positioning)
     const nodesByDepth = new Map<number, string[]>();
     depths.forEach((depth, nodeId) => {
-      if (!nodesByDepth.has(depth)) {
-        nodesByDepth.set(depth, []);
-      }
-      nodesByDepth.get(depth)!.push(nodeId);
+      nodesByDepth.get(depth)?.push(nodeId) ??
+        nodesByDepth.set(depth, [nodeId]);
     });
 
     const visualNodes: VisualNode[] = [];
