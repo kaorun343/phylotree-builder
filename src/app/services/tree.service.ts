@@ -10,16 +10,8 @@ import { PhylogeneticTree, TreeNode, VisualNode } from '../models/tree.types';
 export class TreeService {
   readonly currentTree = signal<PhylogeneticTree | null>(null);
 
-  getCurrentTree(): PhylogeneticTree | null {
-    return this.currentTree();
-  }
-
-  loadTree(tree: PhylogeneticTree): void {
-    this.currentTree.set(tree);
-  }
-
   addLeafNode(targetNodeId: string): void {
-    const currentTree = this.getCurrentTree();
+    const currentTree = this.currentTree();
     if (!currentTree) return;
 
     const targetNode = currentTree.nodes.get(targetNodeId);

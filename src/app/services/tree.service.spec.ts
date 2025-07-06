@@ -45,19 +45,6 @@ describe('TreeService', () => {
     });
   });
 
-  describe('getCurrentTree', () => {
-    it('should return null initially', () => {
-      expect(service.getCurrentTree()).toBeNull();
-    });
-
-    it('should return the loaded tree', () => {
-      const tree = service.createSampleTree();
-      service.loadTree(tree);
-
-      expect(service.getCurrentTree()).toBe(tree);
-    });
-  });
-
   describe('calculateNodePositions', () => {
     let testTree: PhylogeneticTree;
 
@@ -198,7 +185,7 @@ describe('TreeService', () => {
 
     beforeEach(() => {
       testTree = service.createSampleTree();
-      service.loadTree(testTree);
+      service.currentTree.set(testTree);
     });
 
     it('should add a new leaf node and internal node', () => {
@@ -206,7 +193,7 @@ describe('TreeService', () => {
 
       service.addLeafNode('A');
 
-      const updatedTree = service.getCurrentTree();
+      const updatedTree = service.currentTree();
       expect(updatedTree).toBeDefined();
       expect(updatedTree!.nodes.size).toBe(originalSize + 2); // +1 internal, +1 leaf
 
@@ -224,7 +211,7 @@ describe('TreeService', () => {
 
       service.addLeafNode('A');
 
-      const updatedTree = service.getCurrentTree();
+      const updatedTree = service.currentTree();
       const updatedNodeA = updatedTree!.nodes.get('A');
 
       // Original node should have half the branch length
@@ -240,7 +227,7 @@ describe('TreeService', () => {
     it('should update parent-child relationships correctly', () => {
       service.addLeafNode('A');
 
-      const updatedTree = service.getCurrentTree();
+      const updatedTree = service.currentTree();
       const rootNode = updatedTree!.nodes.get('root');
 
       // Root should no longer have 'A' as direct child
@@ -265,16 +252,16 @@ describe('TreeService', () => {
 
       service.addLeafNode('nonexistent');
 
-      const updatedTree = service.getCurrentTree();
+      const updatedTree = service.currentTree();
       expect(updatedTree!.nodes.size).toBe(originalSize); // No change
     });
 
     it('should handle empty tree gracefully', () => {
-      service.loadTree({ id: 'empty', nodes: new Map(), rootId: '' });
+      service.currentTree.set({ id: 'empty', nodes: new Map(), rootId: '' });
 
       service.addLeafNode('A');
 
-      const updatedTree = service.getCurrentTree();
+      const updatedTree = service.currentTree();
       expect(updatedTree!.nodes.size).toBe(0); // No change
     });
   });
@@ -285,14 +272,14 @@ describe('TreeService', () => {
 
       expect(service.currentTree()).toBeNull();
 
-      service.loadTree(tree);
+      service.currentTree.set(tree);
 
       expect(service.currentTree()).toBe(tree);
     });
 
     it('should update tree signal when adding leaf nodes', () => {
       const tree = service.createSampleTree();
-      service.loadTree(tree);
+      service.currentTree.set(tree);
 
       const originalSize = service.currentTree()!.nodes.size;
 

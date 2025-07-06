@@ -54,7 +54,7 @@ export class TreeViewer implements OnInit {
   ngOnInit(): void {
     // Load sample tree for demonstration
     const sampleTree = this.treeService.createSampleTree();
-    this.treeService.loadTree(sampleTree);
+    this.treeService.currentTree.set(sampleTree);
   }
 
   // Computed helper methods
