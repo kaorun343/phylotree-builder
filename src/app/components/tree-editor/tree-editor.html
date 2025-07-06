@@ -1,3 +1,43 @@
 <div class="tree-editor">
-  Tree Editor Panel
+  <div class="svg-settings-panel">
+    <div class="panel-header">
+      <h3>SVG Canvas Settings</h3>
+      <p>Configure the tree visualization canvas</p>
+    </div>
+
+    <div class="settings-form">
+      <!-- Canvas Width -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Canvas Width</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="width"
+          placeholder="Enter canvas width"
+        />
+        <mat-icon matSuffix>straighten</mat-icon>
+        <mat-hint>Width in pixels</mat-hint>
+      </mat-form-field>
+
+      <!-- Canvas Height -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Canvas Height</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="height"
+          placeholder="Enter canvas height"
+        />
+        <mat-icon matSuffix>height</mat-icon>
+        <mat-hint>Height in pixels</mat-hint>
+      </mat-form-field>
+
+      <div class="panel-actions">
+        <button mat-button (click)="resetToDefaults()">
+          <mat-icon>refresh</mat-icon>
+          Reset to Defaults
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

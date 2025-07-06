@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeService } from '../../services/tree.service';
+import { SvgSettingsService } from '../../services/svg-settings.service';
 import { PhylogeneticTree, TreeNode } from '../../models/tree.types';
 
 interface TreePosition {
@@ -23,13 +24,16 @@ export class TreeViewer implements OnInit {
   
   // Injected services
   private treeService = inject(TreeService);
+  private svgSettingsService = inject(SvgSettingsService);
   
   // Signal-based state
   tree = signal<PhylogeneticTree | null>(null);
   selectedNodeId = signal<string | null>(null);
   hoveredNodeId = signal<string | null>(null);
-  svgWidth = signal(800);
-  svgHeight = signal(400);
+  
+  // SVG dimensions from settings service
+  svgWidth = computed(() => this.svgSettingsService.width());
+  svgHeight = computed(() => this.svgSettingsService.height());
   
   // Computed signals
   visualNodes = computed(() => {

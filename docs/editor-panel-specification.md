@@ -61,12 +61,16 @@ The Editor Panel is the right pane of the phylogenetic tree builder application.
 
 #### Features:
 
+- **SVG Canvas Settings**:
+  - Canvas width
+  - Canvas height
+  - Real-time dimension updates
+  - Reset to defaults functionality
 - Tree metadata:
   - Tree name/title
   - Tree description
   - Creation date
-- SVG visualization settings:
-  - Canvas size
+- Advanced visualization settings:
   - Zoom level
   - Layout algorithm (rectangular, circular, radial)
   - Color scheme
@@ -79,11 +83,15 @@ The Editor Panel is the right pane of the phylogenetic tree builder application.
 
 #### UI Components:
 
-- Tree metadata form
-- Visualization settings panel
-- Layout controls
-- Import/Export buttons
-- Global action buttons
+- **SVG Settings Card** (implemented):
+  - Canvas width/height form fields with validation
+  - Current size display
+  - Reset to defaults button
+- Tree metadata form (future)
+- Advanced visualization settings panel (future)
+- Layout controls (future)
+- Import/Export buttons (future)
+- Global action buttons (future)
 
 ## Implementation Structure
 
