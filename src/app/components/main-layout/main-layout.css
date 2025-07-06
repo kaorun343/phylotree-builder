@@ -1,0 +1,48 @@
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  height: 100%;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.main-pane {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tree-visualization {
+  padding: 1rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.editor-pane {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.property-editor {
+  padding: 1rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+
+  .editor-pane {
+    height: 300px;
+  }
+}
