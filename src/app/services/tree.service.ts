@@ -8,16 +8,14 @@ import { PhylogeneticTree, TreeNode, VisualNode } from '../models/tree.types';
   providedIn: 'root',
 })
 export class TreeService {
-  private readonly _currentTree = signal<PhylogeneticTree | null>(null);
-
-  readonly currentTree = this._currentTree.asReadonly();
+  readonly currentTree = signal<PhylogeneticTree | null>(null);
 
   getCurrentTree(): PhylogeneticTree | null {
-    return this._currentTree();
+    return this.currentTree();
   }
 
   loadTree(tree: PhylogeneticTree): void {
-    this._currentTree.set(tree);
+    this.currentTree.set(tree);
   }
 
   addLeafNode(targetNodeId: string): void {
@@ -81,7 +79,7 @@ export class TreeService {
     currentTree.nodes.set(newLeafId, newLeaf);
 
     // Update the tree
-    this._currentTree.set({
+    this.currentTree.set({
       ...currentTree,
       nodes: new Map(currentTree.nodes),
     });

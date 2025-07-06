@@ -24,19 +24,11 @@ export class TreeEditor {
   protected svgSettingsService = inject(SvgSettingsService);
 
   get width() {
-    return this.svgSettingsService.width();
-  }
-
-  set width(value: number) {
-    this.svgSettingsService.updateWidth(value);
+    return this.svgSettingsService.width;
   }
 
   get height() {
-    return this.svgSettingsService.height();
-  }
-
-  set height(value: number) {
-    this.svgSettingsService.updateHeight(value);
+    return this.svgSettingsService.height;
   }
 
   resetToDefaults(): void {

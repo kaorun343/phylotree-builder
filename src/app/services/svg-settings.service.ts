@@ -1,26 +1,17 @@
 import { Injectable, signal } from '@angular/core';
 
+const DEFAULT_WIDTH = 800;
+const DEFAULT_HEIGHT = 600;
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SvgSettingsService {
-  
-  private _width = signal<number>(800);
-  private _height = signal<number>(600);
-
-  readonly width = this._width.asReadonly();
-  readonly height = this._height.asReadonly();
-
-  updateWidth(width: number): void {
-    this._width.set(width);
-  }
-
-  updateHeight(height: number): void {
-    this._height.set(height);
-  }
+  readonly width = signal<number>(DEFAULT_WIDTH);
+  readonly height = signal<number>(DEFAULT_HEIGHT);
 
   reset(): void {
-    this._width.set(800);
-    this._height.set(600);
+    this.width.set(DEFAULT_WIDTH);
+    this.height.set(DEFAULT_HEIGHT);
   }
 }
