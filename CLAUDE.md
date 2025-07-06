@@ -21,6 +21,7 @@ This is a phylogenetic tree builder application built with Angular 20. The proje
 - **Routing**: Routes are defined in `src/app/app.routes.ts` (currently empty)
 - **Styling**: Global styles in `src/styles.css`, component styles co-located with components
 - **TypeScript**: Strict mode enabled with Angular-specific compiler options
+- **Documentation**: Design docs and specifications in `docs/` directory
 
 ## Development Notes
 
