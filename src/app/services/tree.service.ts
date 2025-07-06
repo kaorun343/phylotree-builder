@@ -76,6 +76,38 @@ export class TreeService {
     });
   }
 
+  addLeafToInternal(parentNodeId: string): void {
+    const currentTree = this.currentTree();
+
+    const parentNode = currentTree.nodes.get(parentNodeId);
+    if (!parentNode || parentNode.isLeaf) return;
+
+    // Generate unique ID for new leaf node
+    const newLeafId = this.generateNodeId(currentTree, false);
+
+    // Create new leaf node
+    const newLeaf: TreeNode = {
+      id: newLeafId,
+      name: 'new node',
+      parent: parentNodeId,
+      children: [],
+      isLeaf: true,
+      branchLength: 0.1, // Default branch length
+    };
+
+    // Add new leaf to parent's children
+    parentNode.children.push(newLeafId);
+
+    // Add new leaf node to tree
+    currentTree.nodes.set(newLeafId, newLeaf);
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
   private generateNodeId(tree: PhylogeneticTree, isInternal: boolean): string {
     const prefix = isInternal ? 'internal' : 'leaf';
     let counter = 1;

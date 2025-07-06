@@ -90,8 +90,14 @@ export class TreeViewer {
 
   // Event handlers
   onNodeClick(node: VisualNode): void {
-    const currentSelected = this.selectedNodeId();
-    this.selectedNodeId.set(currentSelected === node.id ? null : node.id);
+    if (node.isLeaf) {
+      // For leaf nodes, toggle selection
+      const currentSelected = this.selectedNodeId();
+      this.selectedNodeId.set(currentSelected === node.id ? null : node.id);
+    } else {
+      // For internal nodes, add a new leaf node directly to the internal node
+      this.treeService.addLeafToInternal(node.id);
+    }
   }
 
   onNodeHover(node: VisualNode): void {
