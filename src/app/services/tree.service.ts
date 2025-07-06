@@ -182,11 +182,9 @@ export class TreeService {
       depths.set(nodeId, currentDepth);
       const node = tree.nodes.get(nodeId);
 
-      if (node) {
-        node.children.forEach((childId) => {
-          calculateDepth(childId, currentDepth + 1);
-        });
-      }
+      node?.children.forEach((childId) => {
+        calculateDepth(childId, currentDepth + 1);
+      });
     };
 
     calculateDepth(tree.rootId, 0);
