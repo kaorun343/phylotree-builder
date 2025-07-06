@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EditorPanel } from './editor-panel';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('EditorPanel', () => {
   let component: EditorPanel;

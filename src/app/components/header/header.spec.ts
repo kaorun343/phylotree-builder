@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Header } from './header';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Header', () => {
   let component: Header;

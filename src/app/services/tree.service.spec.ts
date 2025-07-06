@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TreeService } from './tree.service';
 import { PhylogeneticTree } from '../models/tree.types';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('TreeService', () => {
   let service: TreeService;
