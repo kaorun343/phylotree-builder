@@ -13,16 +13,6 @@
   overflow: hidden;
 }
 
-.tree-visualization {
-  padding: 1rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  font-size: 1.1rem;
-}
-
 .editor-pane {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
