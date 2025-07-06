@@ -1,10 +1,13 @@
 .tree-viewer {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   place-items: center;
   padding: 1rem;
+}
+
+.tree-svg {
+  border: 1px solid #ddd;
 }
 
 .branch {

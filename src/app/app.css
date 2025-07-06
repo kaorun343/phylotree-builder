@@ -1,19 +1,62 @@
 .app {
   display: grid;
+  grid-template-columns: 1fr 300px;
   grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "main-pane editor-pane"
+    "footer footer";
   height: 100vh;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-.main-content {
+app-header {
+  grid-area: header;
+}
+
+.main-pane {
+  grid-area: main-pane;
+  background-color: #fff;
+  border: 1px solid #ddd;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
-app-main-layout {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.editor-pane {
+  grid-area: editor-pane;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+app-footer {
+  grid-area: footer;
+}
+
+.property-editor {
+  padding: 1rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas:
+      "header"
+      "main-pane"
+      "editor-pane"
+      "footer";
+    gap: 1rem;
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .main-pane,
+  .editor-pane {
+    margin-top: 0;
+  }
+
+  .editor-pane {
+    height: 300px;
+  }
 }
