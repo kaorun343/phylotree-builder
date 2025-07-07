@@ -61,7 +61,7 @@ export class TreeViewer {
     const isSelected = this.isNodeSelected();
 
     return (node: VisualNode): number => {
-      const baseRadius = node.isLeaf ? 6 : 4;
+      const baseRadius = node.children.length === 0 ? 6 : 4;
       const selectedScale = isSelected(node.id) ? 1.3 : 1;
       return baseRadius * selectedScale;
     };
@@ -72,7 +72,7 @@ export class TreeViewer {
 
     return (node: VisualNode): string => {
       const classes = ['node'];
-      if (node.isLeaf) classes.push('leaf-node');
+      if (node.children.length === 0) classes.push('leaf-node');
       else classes.push('internal-node');
       if (isSelected(node.id)) classes.push('selected');
       return classes.join(' ');
@@ -83,7 +83,7 @@ export class TreeViewer {
   protected onNodeClick(node: VisualNode, event: MouseEvent): void {
     if (event.ctrlKey || event.metaKey) {
       // Ctrl/Cmd + Click: Add new leaf to internal nodes only
-      if (!node.isLeaf) {
+      if (node.children.length > 0) {
         this.treeService.addLeafToInternal(node.id);
       }
     } else {
@@ -102,7 +102,9 @@ export class TreeViewer {
     } else {
       // Regular click: Select the branch for editing
       // Find the parent of this node to construct the branch ID
-      const parent = this.visualNodes().find(n => n.children.includes(node.id));
+      const parent = this.visualNodes().find((n) =>
+        n.children.includes(node.id)
+      );
       if (parent) {
         const branchId = parent.id + '-' + node.id;
         this.treeService.selectBranch(branchId);

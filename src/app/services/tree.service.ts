@@ -30,7 +30,6 @@ export class TreeService {
       id: newInternalId,
       parent: targetNode.parent,
       children: [targetNodeId, newLeafId],
-      isLeaf: false,
       branchLength: newBranchLength,
     };
 
@@ -40,7 +39,6 @@ export class TreeService {
       name: 'new node',
       parent: newInternalId,
       children: [],
-      isLeaf: true,
       branchLength: newBranchLength,
     };
 
@@ -81,7 +79,7 @@ export class TreeService {
     const currentTree = this.currentTree();
 
     const parentNode = currentTree.nodes.get(parentNodeId);
-    if (!parentNode || parentNode.isLeaf) return;
+    if (!parentNode || parentNode.children.length === 0) return;
 
     // Generate unique ID for new leaf node
     const newLeafId = this.generateNodeId(currentTree, false);
@@ -92,7 +90,6 @@ export class TreeService {
       name: 'new node',
       parent: parentNodeId,
       children: [],
-      isLeaf: true,
       branchLength: 0.1, // Default branch length
     };
 
@@ -127,7 +124,7 @@ export class TreeService {
     const currentTree = this.currentTree();
     const parentNode = currentTree.nodes.get(parentNodeId);
     const childNode = currentTree.nodes.get(childNodeId);
-    
+
     if (!parentNode || !childNode) return;
 
     // Generate unique ID for new internal node
@@ -142,7 +139,6 @@ export class TreeService {
       id: newInternalId,
       parent: parentNodeId,
       children: [childNodeId],
-      isLeaf: false,
       branchLength: newBranchLength,
     };
 
@@ -187,7 +183,7 @@ export class TreeService {
     currentTree.nodes.delete(nodeId);
 
     // If node had children, remove them too (recursive)
-    node.children.forEach(childId => {
+    node.children.forEach((childId) => {
       this.removeNode(childId);
     });
 
@@ -226,7 +222,6 @@ export class TreeService {
       id: 'root',
       name: 'root',
       children: ['A', 'B'],
-      isLeaf: false,
     });
 
     nodes.set('A', {
@@ -234,7 +229,6 @@ export class TreeService {
       name: 'A',
       parent: 'root',
       children: [],
-      isLeaf: true,
       branchLength: 0.1,
     });
 
@@ -243,7 +237,6 @@ export class TreeService {
       name: 'B',
       parent: 'root',
       children: [],
-      isLeaf: true,
       branchLength: 0.2,
     });
 

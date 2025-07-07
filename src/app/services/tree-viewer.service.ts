@@ -8,7 +8,6 @@ export interface D3TreeNode {
   id: string;
   name?: string;
   branchLength?: number;
-  isLeaf: boolean;
   children?: D3TreeNode[];
 }
 
@@ -54,38 +53,44 @@ export class TreeViewerService {
   // Computed visual nodes that automatically update when layout changes
   readonly visualNodes = computed(() => {
     const d3Root = this.d3ClusterLayout();
-    
+
     // Calculate branch length-based horizontal positions
     const nodePositions = new Map<string, { x: number; y: number }>();
-    
+
     // First pass: calculate cumulative distances from root based on branch lengths
-    const calculateDistances = (node: D3ClusterNode, cumulativeDistance: number = 0) => {
-      const currentDistance = cumulativeDistance + (node.data.branchLength || 0);
+    const calculateDistances = (
+      node: D3ClusterNode,
+      cumulativeDistance: number = 0
+    ) => {
+      const currentDistance =
+        cumulativeDistance + (node.data.branchLength || 0);
       nodePositions.set(node.data.id, {
         x: currentDistance,
-        y: node.x // Use d3 cluster's vertical positioning
+        y: node.x, // Use d3 cluster's vertical positioning
       });
-      
-      node.children?.forEach(child => {
+
+      node.children?.forEach((child) => {
         calculateDistances(child, currentDistance);
       });
     };
-    
+
     calculateDistances(d3Root, 0);
-    
+
     // Find max distance to normalize positions
-    const maxDistance = Math.max(...Array.from(nodePositions.values()).map(pos => pos.x));
+    const maxDistance = Math.max(
+      ...Array.from(nodePositions.values()).map((pos) => pos.x)
+    );
     const layoutWidth = this.svgSettingsService.layoutWidth();
-    
+
     return d3Root.descendants().map((d3Node) => {
       const pos = nodePositions.get(d3Node.data.id)!;
-      const normalizedX = maxDistance > 0 ? (pos.x / maxDistance) * layoutWidth : 0;
-      
+      const normalizedX =
+        maxDistance > 0 ? (pos.x / maxDistance) * layoutWidth : 0;
+
       return {
         id: d3Node.data.id,
         name: d3Node.data.name,
         branchLength: d3Node.data.branchLength,
-        isLeaf: d3Node.data.isLeaf,
         children: d3Node.children?.map((child) => child.data.id) || [],
         parent: d3Node.parent?.data.id,
         position: {
@@ -108,7 +113,6 @@ export class TreeViewerService {
       id: node.id,
       name: node.name,
       branchLength: node.branchLength,
-      isLeaf: node.isLeaf,
     };
 
     // Add children if they exist

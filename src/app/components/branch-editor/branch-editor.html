@@ -9,7 +9,7 @@
       <!-- Branch Information Section -->
       <div class="settings-section">
         <h4>Branch Information</h4>
-        
+
         <mat-card class="branch-info-card">
           <mat-card-content>
             <div class="branch-relationship">
@@ -19,7 +19,11 @@
               </div>
               <mat-icon class="arrow-icon">arrow_forward</mat-icon>
               <div class="node-info">
-                <mat-icon>{{ selectedBranchData().child.isLeaf ? 'circle' : 'account_tree' }}</mat-icon>
+                <mat-icon>{{
+                  selectedBranchData().child.children.length === 0
+                    ? "circle"
+                    : "account_tree"
+                }}</mat-icon>
                 <span class="node-name">{{ childNodeName() }}</span>
               </div>
             </div>
@@ -27,12 +31,12 @@
         </mat-card>
       </div>
 
-      <hr class="section-divider">
+      <hr class="section-divider" />
 
       <!-- Branch Properties Section -->
       <div class="settings-section">
         <h4>Branch Properties</h4>
-        
+
         <!-- Branch Length -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Branch Length</mat-label>
@@ -79,23 +83,23 @@
         </mat-form-field>
       </div>
 
-      <hr class="section-divider">
+      <hr class="section-divider" />
 
       <!-- Branch Actions Section -->
       <div class="settings-section">
         <h4>Branch Actions</h4>
-        
+
         <div class="action-buttons">
           <button mat-raised-button color="primary" (click)="onSplitBranch()">
             <mat-icon>call_split</mat-icon>
             Split Branch
           </button>
-          
+
           <button mat-raised-button (click)="onResetBranchLength()">
             <mat-icon>refresh</mat-icon>
             Reset Length
           </button>
-          
+
           <button mat-raised-button color="warn" (click)="onRemoveBranch()">
             <mat-icon>delete</mat-icon>
             Remove Branch

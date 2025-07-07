@@ -8,7 +8,6 @@ export interface TreeNode {
   branchLength?: number;
   parent?: string;
   children: string[];
-  isLeaf: boolean;
 }
 
 export interface PhylogeneticTree {
