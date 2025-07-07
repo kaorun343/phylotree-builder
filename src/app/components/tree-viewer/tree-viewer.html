@@ -2,19 +2,17 @@
   <svg [attr.width]="svgWidth()" [attr.height]="svgHeight()" class="tree-svg">
     <!-- Draw branches -->
     <g class="branches" [attr.transform]="marginTransform()">
-      @for (branch of visibleBranches(); track branch.parent.id + '-' + branch.child.id) {
-        <line
-          [attr.x1]="branch.parent.position.x"
-          [attr.y1]="branch.parent.position.y"
-          [attr.x2]="branch.child.position.x"
-          [attr.y2]="branch.child.position.y"
-          class="branch"
-          [class.branch-hover]="isEdgeHovered()(branch.child.id)"
-          [attr.stroke-width]="isEdgeHovered()(branch.child.id) ? 4 : 2"
-          (click)="onEdgeClick(branch.child)"
-          (mouseenter)="onEdgeHover(branch.child)"
-          (mouseleave)="onEdgeLeave()"
-        ></line>
+      @for (branch of visibleBranches(); track branch.id) {
+      <path
+        [attr.d]="branch | branchPath"
+        class="branch"
+        [class.branch-hover]="isEdgeHovered()(branch.child.id)"
+        [attr.stroke-width]="isEdgeHovered()(branch.child.id) ? 4 : 2"
+        fill="none"
+        (click)="onEdgeClick(branch.child)"
+        (mouseenter)="onEdgeHover(branch.child)"
+        (mouseleave)="onEdgeLeave()"
+      ></path>
       }
     </g>
 

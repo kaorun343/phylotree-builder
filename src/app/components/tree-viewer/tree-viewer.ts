@@ -4,10 +4,11 @@ import { TreeService } from '../../services/tree.service';
 import { TreeViewerService } from '../../services/tree-viewer.service';
 import { SvgSettingsService } from '../../services/svg-settings.service';
 import { VisualNode } from '../../models/tree.types';
+import { BranchPathPipe } from '../../pipes/branch-path-pipe';
 
 @Component({
   selector: 'app-tree-viewer',
-  imports: [CommonModule],
+  imports: [CommonModule, BranchPathPipe],
   templateUrl: './tree-viewer.html',
   styleUrl: './tree-viewer.css',
 })
@@ -42,10 +43,11 @@ export class TreeViewer {
     const nodes = this.visualNodes();
     const nodeMap = new Map(nodes.map((node) => [node.id, node]));
 
-    return nodes.flatMap((parentNode) => {
-      return parentNode.children.flatMap((childId) => {
-        const childNode = nodeMap.get(childId);
-        return childNode ? [{ parent: parentNode, child: childNode }] : [];
+    return nodes.flatMap((parent) => {
+      return parent.children.flatMap((childId) => {
+        const child = nodeMap.get(childId);
+        const id = parent.id + '-' + childId;
+        return child ? { parent, child, id } : [];
       });
     });
   });
