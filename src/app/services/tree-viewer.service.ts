@@ -41,10 +41,12 @@ export class TreeViewerService {
     const root = hierarchy(this.d3TreeData());
 
     // Apply cluster layout
-    const clusterLayout = cluster<D3TreeNode>().size([
-      this.svgSettingsService.layoutHeight(),
-      this.svgSettingsService.layoutWidth(),
-    ]);
+    const clusterLayout = cluster<D3TreeNode>()
+      .separation(() => 1)
+      .size([
+        this.svgSettingsService.layoutHeight(),
+        this.svgSettingsService.layoutWidth(),
+      ]);
 
     return clusterLayout(root);
   });
