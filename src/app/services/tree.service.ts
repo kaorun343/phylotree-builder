@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { PhylogeneticTree, TreeNode } from '../models/tree.types';
 
-export type Selection = 
+export type Selection =
   | { type: 'branch'; id: string }
   | { type: 'node'; id: string }
   | null;
@@ -254,7 +254,7 @@ export class TreeService {
 
     nodes.set('root', {
       id: 'root',
-      name: 'root',
+      name: '',
       children: ['A', 'B'],
     });
 
