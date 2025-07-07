@@ -52,21 +52,17 @@
           <mat-hint>Evolutionary distance to parent</mat-hint>
         </mat-form-field>
 
-        <!-- Branch Support (placeholder for future) -->
+        <!-- Branch Color -->
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Branch Support</mat-label>
+          <mat-label>Branch Color</mat-label>
           <input
             matInput
-            type="number"
-            value="1.0"
-            placeholder="Enter support value"
-            step="0.01"
-            min="0"
-            max="1"
-            disabled
+            type="color"
+            [(ngModel)]="branchColorValue"
+            placeholder="Select branch color"
           />
-          <mat-icon matSuffix>verified</mat-icon>
-          <mat-hint>Statistical support (0-1)</mat-hint>
+          <mat-icon matSuffix>palette</mat-icon>
+          <mat-hint>Visual color for this branch</mat-hint>
         </mat-form-field>
 
         <!-- Branch Label (placeholder for future) -->
@@ -98,6 +94,11 @@
           <button mat-raised-button (click)="onResetBranchLength()">
             <mat-icon>refresh</mat-icon>
             Reset Length
+          </button>
+
+          <button mat-raised-button (click)="onResetBranchColor()">
+            <mat-icon>color_lens</mat-icon>
+            Reset Color
           </button>
 
           <button mat-raised-button color="warn" (click)="onRemoveBranch()">

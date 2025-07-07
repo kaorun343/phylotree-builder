@@ -11,6 +11,7 @@
       <path
         [attr.d]="branch | branchPath"
         class="branch"
+        [attr.stroke]="branch.child.color || '#666'"
         stroke-width="2"
         fill="none"
         (click)="onEdgeClick(branch.child, $event)"

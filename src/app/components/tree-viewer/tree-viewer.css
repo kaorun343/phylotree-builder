@@ -11,7 +11,6 @@
 }
 
 .branch {
-  stroke: #666;
   stroke-width: 2;
   cursor: pointer;
   transition: all 0.2s ease;

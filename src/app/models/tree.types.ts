@@ -8,6 +8,7 @@ export interface TreeNode {
   branchLength?: number;
   parent?: string;
   children: string[];
+  color?: string;
 }
 
 export interface PhylogeneticTree {

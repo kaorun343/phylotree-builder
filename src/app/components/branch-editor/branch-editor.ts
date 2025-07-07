@@ -50,6 +50,11 @@ export class BranchEditor {
     return branch.child.branchLength || 0;
   });
 
+  protected branchColor = computed(() => {
+    const branch = this.selectedBranchData();
+    return branch.child.color || '#666666';
+  });
+
   protected parentNodeName = computed(() => {
     const branch = this.selectedBranchData();
     return branch.parent.name || 'Unknown';
@@ -71,6 +76,16 @@ export class BranchEditor {
     this.treeService.updateNodeBranchLength(branch.child.id, value);
   }
 
+  get branchColorValue() {
+    return this.branchColor();
+  }
+
+  set branchColorValue(value: string) {
+    const branch = this.selectedBranchData();
+    // Update the branch color through the tree service
+    this.treeService.updateNodeColor(branch.child.id, value);
+  }
+
   protected onSplitBranch(): void {
     const branch = this.selectedBranchData();
     // Add a new internal node between parent and child
@@ -85,5 +100,10 @@ export class BranchEditor {
 
   protected onResetBranchLength(): void {
     this.branchLengthValue = 1.0;
+  }
+
+  protected onResetBranchColor(): void {
+    const branch = this.selectedBranchData();
+    this.treeService.updateNodeColor(branch.child.id, undefined);
   }
 }

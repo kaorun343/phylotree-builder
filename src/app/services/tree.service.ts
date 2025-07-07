@@ -125,6 +125,20 @@ export class TreeService {
     });
   }
 
+  updateNodeColor(nodeId: string, color: string | undefined): void {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node) return;
+
+    node.color = color;
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
   addInternalNode(parentNodeId: string, childNodeId: string): void {
     const currentTree = this.currentTree();
     const parentNode = currentTree.nodes.get(parentNodeId);
