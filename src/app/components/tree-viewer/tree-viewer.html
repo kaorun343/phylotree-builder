@@ -6,12 +6,9 @@
       <path
         [attr.d]="branch | branchPath"
         class="branch"
-        [class.branch-hover]="isEdgeHovered()(branch.child.id)"
-        [attr.stroke-width]="isEdgeHovered()(branch.child.id) ? 4 : 2"
+        stroke-width="2"
         fill="none"
         (click)="onEdgeClick(branch.child)"
-        (mouseenter)="onEdgeHover(branch.child)"
-        (mouseleave)="onEdgeLeave()"
       ></path>
       }
     </g>
@@ -36,8 +33,6 @@
         [attr.r]="getNodeRadius()(node)"
         [attr.class]="getNodeClasses()(node)"
         (click)="onNodeClick(node)"
-        (mouseenter)="onNodeHover(node)"
-        (mouseleave)="onNodeLeave()"
       ></circle>
 
       <!-- Node label -->

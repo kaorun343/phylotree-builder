@@ -19,27 +19,25 @@ export class TreeViewer {
   private svgSettingsService = inject(SvgSettingsService);
 
   // Signal-based state
-  tree = computed(() => this.treeService.currentTree());
-  selectedNodeId = signal<string | null>(null);
-  hoveredNodeId = signal<string | null>(null);
-  hoveredEdgeId = signal<string | null>(null);
+  protected tree = computed(() => this.treeService.currentTree());
+  protected selectedNodeId = signal<string | null>(null);
 
   // SVG dimensions from settings service
-  svgWidth = computed(() => this.svgSettingsService.width());
-  svgHeight = computed(() => this.svgSettingsService.height());
+  protected svgWidth = computed(() => this.svgSettingsService.width());
+  protected svgHeight = computed(() => this.svgSettingsService.height());
 
   // Get visual nodes directly from the service's computed property
-  visualNodes = computed(() => this.treeViewerService.visualNodes());
+  protected visualNodes = computed(() => this.treeViewerService.visualNodes());
 
   // SVG transform for margin positioning
-  marginTransform = computed(() => {
+  protected marginTransform = computed(() => {
     const marginLeft = this.svgSettingsService.marginLeft();
     const marginTop = this.svgSettingsService.marginTop();
     return `translate(${marginLeft},${marginTop})`;
   });
 
   // Flat list of visible branches for easier template iteration
-  visibleBranches = computed(() => {
+  protected visibleBranches = computed(() => {
     const nodes = this.visualNodes();
     const nodeMap = new Map(nodes.map((node) => [node.id, node]));
 
@@ -52,55 +50,38 @@ export class TreeViewer {
     });
   });
 
-  isNodeSelected = computed(() => {
+  protected isNodeSelected = computed(() => {
     const selectedId = this.selectedNodeId();
     return (nodeId: string): boolean => {
       return selectedId === nodeId;
     };
   });
 
-  isNodeHovered = computed(() => {
-    const hoveredId = this.hoveredNodeId();
-    return (nodeId: string): boolean => {
-      return hoveredId === nodeId;
-    };
-  });
 
-  isEdgeHovered = computed(() => {
-    const hoveredEdgeId = this.hoveredEdgeId();
-    return (nodeId: string): boolean => {
-      return hoveredEdgeId === nodeId;
-    };
-  });
-
-  getNodeRadius = computed(() => {
+  protected getNodeRadius = computed(() => {
     const isSelected = this.isNodeSelected();
-    const isHovered = this.isNodeHovered();
 
     return (node: VisualNode): number => {
       const baseRadius = node.isLeaf ? 6 : 4;
-      const hoverScale = isHovered(node.id) ? 1.2 : 1;
       const selectedScale = isSelected(node.id) ? 1.3 : 1;
-      return baseRadius * Math.max(hoverScale, selectedScale);
+      return baseRadius * selectedScale;
     };
   });
 
-  getNodeClasses = computed(() => {
+  protected getNodeClasses = computed(() => {
     const isSelected = this.isNodeSelected();
-    const isHovered = this.isNodeHovered();
 
     return (node: VisualNode): string => {
       const classes = ['node'];
       if (node.isLeaf) classes.push('leaf-node');
       else classes.push('internal-node');
       if (isSelected(node.id)) classes.push('selected');
-      if (isHovered(node.id)) classes.push('hovered');
       return classes.join(' ');
     };
   });
 
   // Event handlers
-  onNodeClick(node: VisualNode): void {
+  protected onNodeClick(node: VisualNode): void {
     if (node.isLeaf) {
       // For leaf nodes, toggle selection
       const currentSelected = this.selectedNodeId();
@@ -111,24 +92,8 @@ export class TreeViewer {
     }
   }
 
-  onNodeHover(node: VisualNode): void {
-    this.hoveredNodeId.set(node.id);
-  }
-
-  onNodeLeave(): void {
-    this.hoveredNodeId.set(null);
-  }
-
   // Edge event handlers
-  onEdgeClick(node: VisualNode): void {
+  protected onEdgeClick(node: VisualNode): void {
     this.treeService.addLeafNode(node.id);
-  }
-
-  onEdgeHover(node: VisualNode): void {
-    this.hoveredEdgeId.set(node.id);
-  }
-
-  onEdgeLeave(): void {
-    this.hoveredEdgeId.set(null);
   }
 }
