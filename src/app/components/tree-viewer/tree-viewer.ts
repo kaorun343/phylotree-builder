@@ -57,7 +57,6 @@ export class TreeViewer {
     };
   });
 
-
   protected getNodeRadius = computed(() => {
     const isSelected = this.isNodeSelected();
 
@@ -81,19 +80,23 @@ export class TreeViewer {
   });
 
   // Event handlers
-  protected onNodeClick(node: VisualNode): void {
-    if (node.isLeaf) {
-      // For leaf nodes, toggle selection
+  protected onNodeClick(node: VisualNode, event: MouseEvent): void {
+    if (event.ctrlKey || event.metaKey) {
+      // Ctrl/Cmd + Click: Add new leaf to internal nodes only
+      if (!node.isLeaf) {
+        this.treeService.addLeafToInternal(node.id);
+      }
+    } else {
+      // Regular click: Select/deselect for both leaf and internal nodes
       const currentSelected = this.selectedNodeId();
       this.selectedNodeId.set(currentSelected === node.id ? null : node.id);
-    } else {
-      // For internal nodes, add a new leaf node directly to the internal node
-      this.treeService.addLeafToInternal(node.id);
     }
   }
 
   // Edge event handlers
-  protected onEdgeClick(node: VisualNode): void {
-    this.treeService.addLeafNode(node.id);
+  protected onEdgeClick(node: VisualNode, event: MouseEvent): void {
+    if (event.ctrlKey || event.metaKey) {
+      this.treeService.addLeafNode(node.id);
+    }
   }
 }

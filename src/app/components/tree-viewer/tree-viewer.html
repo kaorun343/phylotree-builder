@@ -8,7 +8,7 @@
         class="branch"
         stroke-width="2"
         fill="none"
-        (click)="onEdgeClick(branch.child)"
+        (click)="onEdgeClick(branch.child, $event)"
       ></path>
       }
     </g>
@@ -32,7 +32,7 @@
         [attr.cy]="node.position.y"
         [attr.r]="getNodeRadius()(node)"
         [attr.class]="getNodeClasses()(node)"
-        (click)="onNodeClick(node)"
+        (click)="onNodeClick(node, $event)"
       ></circle>
 
       <!-- Node label -->
