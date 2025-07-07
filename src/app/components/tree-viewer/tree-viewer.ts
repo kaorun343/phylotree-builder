@@ -80,6 +80,8 @@ export class TreeViewer {
 
   // Event handlers
   protected onNodeClick(node: VisualNode, event: MouseEvent): void {
+    event.stopPropagation(); // Prevent SVG click from firing
+
     if (event.ctrlKey || event.metaKey) {
       // Ctrl/Cmd + Click: Add new leaf to internal nodes only
       if (node.children.length > 0) {
@@ -98,6 +100,8 @@ export class TreeViewer {
 
   // Edge event handlers
   protected onEdgeClick(node: VisualNode, event: MouseEvent): void {
+    event.stopPropagation(); // Prevent SVG click from firing
+
     if (event.ctrlKey || event.metaKey) {
       this.treeService.addLeafNode(node.id);
     } else {
@@ -110,6 +114,14 @@ export class TreeViewer {
         const branchId = parent.id + '-' + node.id;
         this.treeService.selectBranch(branchId);
       }
+    }
+  }
+
+  // Clear selection when clicking on empty space
+  protected onSvgClick(event: MouseEvent): void {
+    // Only clear if clicking directly on the SVG (not on child elements)
+    if (event.target === event.currentTarget) {
+      this.treeService.clearSelection();
     }
   }
 }

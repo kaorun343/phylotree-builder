@@ -1,5 +1,10 @@
 <div class="tree-viewer">
-  <svg [attr.width]="svgWidth()" [attr.height]="svgHeight()" class="tree-svg">
+  <svg
+    [attr.width]="svgWidth()"
+    [attr.height]="svgHeight()"
+    class="tree-svg"
+    (click)="onSvgClick($event)"
+  >
     <!-- Draw branches -->
     <g class="branches" [attr.transform]="marginTransform()">
       @for (branch of visibleBranches(); track branch.id) {
