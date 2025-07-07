@@ -3,7 +3,7 @@ import { Injectable, signal, computed } from '@angular/core';
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 const DEFAULT_MARGIN_TOP = 20;
-const DEFAULT_MARGIN_RIGHT = 40;
+const DEFAULT_MARGIN_RIGHT = 100;
 const DEFAULT_MARGIN_BOTTOM = 20;
 const DEFAULT_MARGIN_LEFT = 40;
 const DEFAULT_ROOT_BRANCH_LENGTH = 20;

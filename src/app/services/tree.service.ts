@@ -266,26 +266,96 @@ export class TreeService {
   createSampleTree(): PhylogeneticTree {
     const nodes = new Map<string, TreeNode>();
 
+    // Root node (vertebrates)
     nodes.set('root', {
       id: 'root',
       name: '',
-      children: ['A', 'B'],
+      children: ['leaf_6', 'internal_1'], // fish splits first
     });
 
-    nodes.set('A', {
-      id: 'A',
-      name: 'A',
+    // Tetrapods (four-limbed vertebrates)
+    nodes.set('internal_1', {
+      id: 'internal_1',
+      name: '',
       parent: 'root',
-      children: [],
-      branchLength: 0.1,
-    });
-
-    nodes.set('B', {
-      id: 'B',
-      name: 'B',
-      parent: 'root',
-      children: [],
+      children: ['leaf_5', 'internal_2'], // frog splits from amniotes
       branchLength: 0.2,
+    });
+
+    // Amniotes (eggs with shells)
+    nodes.set('internal_2', {
+      id: 'internal_2',
+      name: '',
+      parent: 'internal_1',
+      children: ['internal_3', 'internal_4'], // mammals split from reptiles+birds
+      branchLength: 0.2,
+    });
+
+    // Mammals
+    nodes.set('internal_3', {
+      id: 'internal_3',
+      name: '',
+      parent: 'internal_2',
+      children: ['leaf_1', 'leaf_2'], // human and mouse
+      branchLength: 0.3,
+    });
+
+    // Reptiles + Birds (Sauropsids)
+    nodes.set('internal_4', {
+      id: 'internal_4',
+      name: '',
+      parent: 'internal_2',
+      children: ['leaf_3', 'leaf_4'], // chicken and lizard
+      branchLength: 0.3,
+    });
+
+    // Leaf nodes (all at same depth for UPGMA)
+    nodes.set('leaf_1', {
+      id: 'leaf_1',
+      name: 'Human',
+      parent: 'internal_3',
+      children: [],
+      branchLength: 0.3,
+    });
+
+    nodes.set('leaf_2', {
+      id: 'leaf_2',
+      name: 'Mouse',
+      parent: 'internal_3',
+      children: [],
+      branchLength: 0.3,
+    });
+
+    nodes.set('leaf_3', {
+      id: 'leaf_3',
+      name: 'Chicken',
+      parent: 'internal_4',
+      children: [],
+      branchLength: 0.3,
+    });
+
+    nodes.set('leaf_4', {
+      id: 'leaf_4',
+      name: 'Lizard',
+      parent: 'internal_4',
+      children: [],
+      branchLength: 0.3,
+    });
+
+    nodes.set('leaf_5', {
+      id: 'leaf_5',
+      name: 'Frog',
+      parent: 'internal_1',
+      children: [],
+      branchLength: 0.6,
+    });
+
+    nodes.set('leaf_6', {
+      id: 'leaf_6',
+      name: 'Zebrafish',
+      parent: 'root',
+      children: [],
+      branchLength: 0.8,
     });
 
     return {
