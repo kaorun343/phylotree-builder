@@ -27,11 +27,8 @@ export class TreeViewer {
   svgWidth = computed(() => this.svgSettingsService.width());
   svgHeight = computed(() => this.svgSettingsService.height());
 
-  // Computed signals
-  visualNodes = computed(() => {
-    const currentTree = this.tree();
-    return this.treeViewerService.calculateNodePositions(currentTree);
-  });
+  // Get visual nodes directly from the service's computed property
+  visualNodes = computed(() => this.treeViewerService.visualNodes());
 
   // SVG transform for margin positioning
   marginTransform = computed(() => {

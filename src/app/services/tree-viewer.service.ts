@@ -1,7 +1,8 @@
 import { Injectable, inject, computed } from '@angular/core';
 import { hierarchy, cluster, HierarchyNode } from 'd3-hierarchy';
-import { PhylogeneticTree, TreeNode, VisualNode } from '../models/tree.types';
+import { TreeNode } from '../models/tree.types';
 import { SvgSettingsService } from './svg-settings.service';
+import { TreeService } from './tree.service';
 
 export interface D3TreeNode {
   id: string;
@@ -21,16 +22,23 @@ export interface D3ClusterNode extends HierarchyNode<D3TreeNode> {
 })
 export class TreeViewerService {
   private svgSettingsService = inject(SvgSettingsService);
+  private treeService = inject(TreeService);
 
-  /**
-   * Convert phylogenetic tree data to d3 cluster layout format
-   */
-  createD3ClusterLayout(tree: PhylogeneticTree): D3ClusterNode {
-    // Convert phylogenetic tree to d3 hierarchy format
-    const d3TreeData = this.convertToD3TreeData(tree);
+  // Computed d3 tree data that automatically updates when tree changes
+  private d3TreeData = computed(() => {
+    const tree = this.treeService.currentTree();
+    const rootNode = tree.nodes.get(tree.rootId);
+    if (!rootNode) {
+      throw new Error('Root node not found');
+    }
 
-    // Create hierarchy
-    const root = hierarchy(d3TreeData);
+    return this.buildD3Node(rootNode, tree.nodes);
+  });
+
+  // Computed d3 cluster layout that automatically updates when tree or settings change
+  private d3ClusterLayout = computed(() => {
+    // Create hierarchy from computed d3 tree data
+    const root = hierarchy(this.d3TreeData());
 
     // Apply cluster layout
     const clusterLayout = cluster<D3TreeNode>().size([
@@ -39,19 +47,26 @@ export class TreeViewerService {
     ]);
 
     return clusterLayout(root);
-  }
+  });
 
-  /**
-   * Convert phylogenetic tree to d3-compatible tree structure
-   */
-  private convertToD3TreeData(tree: PhylogeneticTree): D3TreeNode {
-    const rootNode = tree.nodes.get(tree.rootId);
-    if (!rootNode) {
-      throw new Error('Root node not found');
-    }
+  // Computed visual nodes that automatically update when layout changes
+  readonly visualNodes = computed(() => {
+    const d3Root = this.d3ClusterLayout();
 
-    return this.buildD3Node(rootNode, tree.nodes);
-  }
+    return d3Root.descendants().map((d3Node) => ({
+      id: d3Node.data.id,
+      name: d3Node.data.name,
+      branchLength: d3Node.data.branchLength,
+      isLeaf: d3Node.data.isLeaf,
+      children: d3Node.children?.map((child) => child.data.id) || [],
+      parent: d3Node.parent?.data.id,
+      position: {
+        x: d3Node.y, // d3 cluster uses y for horizontal position
+        y: d3Node.x, // d3 cluster uses x for vertical position
+      },
+      depth: d3Node.depth,
+    }));
+  });
 
   /**
    * Recursively build d3 tree node structure
@@ -79,40 +94,5 @@ export class TreeViewerService {
     }
 
     return d3Node;
-  }
-
-  /**
-   * Convert d3 cluster layout result to VisualNode array
-   */
-  convertD3ToVisualNodes(d3Root: D3ClusterNode): VisualNode[] {
-    const visualNodes: VisualNode[] = [];
-
-    d3Root.descendants().forEach((d3Node) => {
-      const visualNode: VisualNode = {
-        id: d3Node.data.id,
-        name: d3Node.data.name,
-        branchLength: d3Node.data.branchLength,
-        isLeaf: d3Node.data.isLeaf,
-        children: d3Node.children?.map((child) => child.data.id) || [],
-        parent: d3Node.parent?.data.id,
-        position: {
-          x: d3Node.y, // d3 cluster uses y for horizontal position
-          y: d3Node.x, // d3 cluster uses x for vertical position
-        },
-        depth: d3Node.depth,
-      };
-
-      visualNodes.push(visualNode);
-    });
-
-    return visualNodes;
-  }
-
-  /**
-   * Create visual nodes using d3 cluster layout
-   */
-  calculateNodePositions(tree: PhylogeneticTree): VisualNode[] {
-    const d3Root = this.createD3ClusterLayout(tree);
-    return this.convertD3ToVisualNodes(d3Root);
   }
 }
