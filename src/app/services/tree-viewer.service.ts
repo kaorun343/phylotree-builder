@@ -21,11 +21,7 @@ export interface D3ClusterNode extends HierarchyNode<D3TreeNode> {
 })
 export class TreeViewerService {
   private svgSettingsService = inject(SvgSettingsService);
-  
-  // Computed dimensions with 40px margin
-  private layoutWidth = computed(() => this.svgSettingsService.width() - 80); // 40px margin on each side
-  private layoutHeight = computed(() => this.svgSettingsService.height() - 80); // 40px margin on top and bottom
-  
+
   /**
    * Convert phylogenetic tree data to d3 cluster layout format
    */
@@ -37,7 +33,10 @@ export class TreeViewerService {
     const root = hierarchy(d3TreeData);
 
     // Apply cluster layout
-    const clusterLayout = cluster<D3TreeNode>().size([this.layoutHeight(), this.layoutWidth()]);
+    const clusterLayout = cluster<D3TreeNode>().size([
+      this.svgSettingsService.layoutHeight(),
+      this.svgSettingsService.layoutWidth(),
+    ]);
 
     return clusterLayout(root);
   }

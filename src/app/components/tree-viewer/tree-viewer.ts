@@ -33,12 +33,24 @@ export class TreeViewer {
     return this.treeViewerService.calculateNodePositions(currentTree);
   });
 
-  // Computed helper methods
-  getNodeById = computed(() => {
+  // SVG transform for margin positioning
+  marginTransform = computed(() => {
+    const marginLeft = this.svgSettingsService.marginLeft();
+    const marginTop = this.svgSettingsService.marginTop();
+    return `translate(${marginLeft},${marginTop})`;
+  });
+
+  // Flat list of visible branches for easier template iteration
+  visibleBranches = computed(() => {
     const nodes = this.visualNodes();
-    return (nodeId: string): VisualNode | undefined => {
-      return nodes.find((n) => n.id === nodeId);
-    };
+    const nodeMap = new Map(nodes.map((node) => [node.id, node]));
+
+    return nodes.flatMap((parentNode) => {
+      return parentNode.children.flatMap((childId) => {
+        const childNode = nodeMap.get(childId);
+        return childNode ? [{ parent: parentNode, child: childNode }] : [];
+      });
+    });
   });
 
   isNodeSelected = computed(() => {

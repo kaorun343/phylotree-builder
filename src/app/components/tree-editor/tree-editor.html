@@ -6,31 +6,97 @@
     </div>
 
     <div class="settings-form">
-      <!-- Canvas Width -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Canvas Width</mat-label>
-        <input
-          matInput
-          type="number"
-          [(ngModel)]="width"
-          placeholder="Enter canvas width"
-        />
-        <mat-icon matSuffix>straighten</mat-icon>
-        <mat-hint>Width in pixels</mat-hint>
-      </mat-form-field>
+      <!-- Canvas Dimensions Section -->
+      <div class="settings-section">
+        <h4>Canvas Dimensions</h4>
+        
+        <!-- Canvas Width -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Canvas Width</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="width"
+            placeholder="Enter canvas width"
+          />
+          <mat-icon matSuffix>straighten</mat-icon>
+          <mat-hint>Width in pixels</mat-hint>
+        </mat-form-field>
 
-      <!-- Canvas Height -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Canvas Height</mat-label>
-        <input
-          matInput
-          type="number"
-          [(ngModel)]="height"
-          placeholder="Enter canvas height"
-        />
-        <mat-icon matSuffix>height</mat-icon>
-        <mat-hint>Height in pixels</mat-hint>
-      </mat-form-field>
+        <!-- Canvas Height -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Canvas Height</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="height"
+            placeholder="Enter canvas height"
+          />
+          <mat-icon matSuffix>height</mat-icon>
+          <mat-hint>Height in pixels</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Margin Controls Section -->
+      <div class="settings-section">
+        <h4>Margins</h4>
+        
+        <!-- Top Margin -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Top Margin</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="marginTop"
+            placeholder="Enter top margin"
+          />
+          <mat-icon matSuffix>keyboard_arrow_up</mat-icon>
+          <mat-hint>Top margin in pixels</mat-hint>
+        </mat-form-field>
+
+        <!-- Right Margin -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Right Margin</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="marginRight"
+            placeholder="Enter right margin"
+          />
+          <mat-icon matSuffix>keyboard_arrow_right</mat-icon>
+          <mat-hint>Right margin in pixels</mat-hint>
+        </mat-form-field>
+
+        <!-- Bottom Margin -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Bottom Margin</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="marginBottom"
+            placeholder="Enter bottom margin"
+          />
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+          <mat-hint>Bottom margin in pixels</mat-hint>
+        </mat-form-field>
+
+        <!-- Left Margin -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Left Margin</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="marginLeft"
+            placeholder="Enter left margin"
+          />
+          <mat-icon matSuffix>keyboard_arrow_left</mat-icon>
+          <mat-hint>Left margin in pixels</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <hr class="section-divider">
 
       <div class="panel-actions">
         <button mat-button (click)="resetToDefaults()">

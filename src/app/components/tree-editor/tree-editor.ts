@@ -31,6 +31,22 @@ export class TreeEditor {
     return this.svgSettingsService.height;
   }
 
+  get marginTop() {
+    return this.svgSettingsService.marginTop;
+  }
+
+  get marginRight() {
+    return this.svgSettingsService.marginRight;
+  }
+
+  get marginBottom() {
+    return this.svgSettingsService.marginBottom;
+  }
+
+  get marginLeft() {
+    return this.svgSettingsService.marginLeft;
+  }
+
   resetToDefaults(): void {
     this.svgSettingsService.reset();
   }

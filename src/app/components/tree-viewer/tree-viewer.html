@@ -1,62 +1,60 @@
 <div class="tree-viewer">
   <svg [attr.width]="svgWidth()" [attr.height]="svgHeight()" class="tree-svg">
     <!-- Draw branches -->
-    <g class="branches" *ngIf="tree()">
-      <ng-container *ngFor="let node of visualNodes()">
-        <g *ngFor="let childId of node.children">
-          <ng-container *ngIf="getNodeById()(childId) as child">
-            <line
-              [attr.x1]="node.position.x"
-              [attr.y1]="node.position.y"
-              [attr.x2]="child.position.x"
-              [attr.y2]="child.position.y"
-              class="branch"
-              [class.branch-hover]="isEdgeHovered()(child.id)"
-              [attr.stroke-width]="isEdgeHovered()(child.id) ? 4 : 2"
-              (click)="onEdgeClick(child)"
-              (mouseenter)="onEdgeHover(child)"
-              (mouseleave)="onEdgeLeave()"
-            ></line>
-          </ng-container>
-        </g>
-      </ng-container>
+    <g class="branches" [attr.transform]="marginTransform()">
+      @for (branch of visibleBranches(); track branch.parent.id + '-' + branch.child.id) {
+        <line
+          [attr.x1]="branch.parent.position.x"
+          [attr.y1]="branch.parent.position.y"
+          [attr.x2]="branch.child.position.x"
+          [attr.y2]="branch.child.position.y"
+          class="branch"
+          [class.branch-hover]="isEdgeHovered()(branch.child.id)"
+          [attr.stroke-width]="isEdgeHovered()(branch.child.id) ? 4 : 2"
+          (click)="onEdgeClick(branch.child)"
+          (mouseenter)="onEdgeHover(branch.child)"
+          (mouseleave)="onEdgeLeave()"
+        ></line>
+      }
     </g>
 
     <!-- Draw nodes -->
-    <g class="nodes" *ngIf="tree()">
-      <ng-container *ngFor="let node of visualNodes()">
-        <!-- Selection indicator (behind node) -->
-        <circle
-          *ngIf="isNodeSelected()(node.id)"
-          [attr.cx]="node.position.x"
-          [attr.cy]="node.position.y"
-          [attr.r]="getNodeRadius()(node) + 3"
-          class="selection-ring">
-        </circle>
-        
-        <!-- Node circle -->
-        <circle
-          [attr.cx]="node.position.x"
-          [attr.cy]="node.position.y"
-          [attr.r]="getNodeRadius()(node)"
-          [attr.class]="getNodeClasses()(node)"
-          (click)="onNodeClick(node)"
-          (mouseenter)="onNodeHover(node)"
-          (mouseleave)="onNodeLeave()">
-        </circle>
+    <g class="nodes" [attr.transform]="marginTransform()">
+      @for (node of visualNodes(); track node.id) {
+      <!-- Selection indicator (behind node) -->
+      @if (isNodeSelected()(node.id)) {
+      <circle
+        [attr.cx]="node.position.x"
+        [attr.cy]="node.position.y"
+        [attr.r]="getNodeRadius()(node) + 3"
+        class="selection-ring"
+      ></circle>
+      }
 
-        <!-- Node label -->
-        <text
-          [attr.x]="node.position.x + 10"
-          [attr.y]="node.position.y + 5"
-          class="node-label"
-          [class.selected-label]="isNodeSelected()(node.id)">
-          {{ node.name }}
-          <tspan *ngIf="node.branchLength" class="branch-length">
-            :{{ node.branchLength }}
-          </tspan>
-        </text>
-      </ng-container>
+      <!-- Node circle -->
+      <circle
+        [attr.cx]="node.position.x"
+        [attr.cy]="node.position.y"
+        [attr.r]="getNodeRadius()(node)"
+        [attr.class]="getNodeClasses()(node)"
+        (click)="onNodeClick(node)"
+        (mouseenter)="onNodeHover(node)"
+        (mouseleave)="onNodeLeave()"
+      ></circle>
+
+      <!-- Node label -->
+      <text
+        [attr.x]="node.position.x + 10"
+        [attr.y]="node.position.y + 5"
+        class="node-label"
+        [class.selected-label]="isNodeSelected()(node.id)"
+      >
+        {{ node.name }}
+        @if (node.branchLength) {
+        <tspan class="branch-length">:{{ node.branchLength }}</tspan>
+        }
+      </text>
+      }
     </g>
   </svg>
 </div>
