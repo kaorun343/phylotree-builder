@@ -7,7 +7,18 @@
   >
     <!-- Draw branches -->
     <g class="branches" [attr.transform]="marginTransform()">
-      @for (branch of visibleBranches(); track branch.id) {
+      <!-- Root branch (always shown) -->
+      @if (rootBranch()) {
+      <line
+        [attr.x1]="rootBranch()!.start.x"
+        [attr.y1]="rootBranch()!.start.y"
+        [attr.x2]="rootBranch()!.end.x"
+        [attr.y2]="rootBranch()!.end.y"
+        class="branch root-branch"
+        stroke="#666"
+        stroke-width="2"
+      ></line>
+      } @for (branch of visibleBranches(); track branch.id) {
       <path
         [attr.d]="branch | branchPath"
         class="branch"
@@ -55,8 +66,8 @@
 
     <!-- Draw branch length labels -->
     <g class="branch-labels" [attr.transform]="marginTransform()">
-      @for (branch of visibleBranches(); track branch.id) {
-      @if (branch.child.branchLength) {
+      @for (branch of visibleBranches(); track branch.id) { @if
+      (branch.child.branchLength) {
       <text
         [attr.x]="getBranchLabelX(branch)"
         [attr.y]="getBranchLabelY(branch)"
@@ -66,8 +77,7 @@
       >
         {{ branch.child.branchLength }}
       </text>
-      }
-      }
+      } }
     </g>
   </svg>
 </div>

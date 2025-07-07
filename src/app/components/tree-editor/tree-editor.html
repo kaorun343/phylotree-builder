@@ -98,6 +98,28 @@
 
       <hr class="section-divider">
 
+      <!-- Root Branch Section -->
+      <div class="settings-section">
+        <h4>Root Branch</h4>
+        
+        <!-- Root Branch Length -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Root Branch Length</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="rootBranchLength"
+            placeholder="Enter root branch length"
+            step="10"
+            min="0"
+          />
+          <mat-icon matSuffix>straighten</mat-icon>
+          <mat-hint>Length of the root branch in pixels</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <hr class="section-divider">
+
       <div class="panel-actions">
         <button mat-button (click)="resetToDefaults()">
           <mat-icon>refresh</mat-icon>

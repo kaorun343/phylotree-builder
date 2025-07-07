@@ -101,3 +101,13 @@
 .panel-actions {
   margin-top: 0;
 }
+
+.checkbox-hint {
+  margin: 8px 0 16px 32px;
+  font-size: 12px;
+  color: #666;
+}
+
+.disabled {
+  opacity: 0.6;
+}

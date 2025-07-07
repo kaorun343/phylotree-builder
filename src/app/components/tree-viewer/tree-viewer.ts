@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeService } from '../../services/tree.service';
 import { TreeViewerService } from '../../services/tree-viewer.service';
@@ -47,6 +47,29 @@ export class TreeViewer {
         return child ? { parent, child, id } : [];
       });
     });
+  });
+
+  // Root branch information (always shown with pixel-based length)
+  protected rootBranch = computed(() => {
+    const rootBranchLength = this.svgSettingsService.rootBranchLength();
+    const nodes = this.visualNodes();
+    
+    const tree = this.tree();
+    const rootNode = nodes.find(node => node.id === tree.rootId);
+    if (!rootNode) return null;
+
+    // Root branch extends to the left by the specified pixel length
+    return {
+      start: {
+        x: rootNode.position.x - rootBranchLength,
+        y: rootNode.position.y
+      },
+      end: {
+        x: rootNode.position.x,
+        y: rootNode.position.y
+      },
+      length: rootBranchLength
+    };
   });
 
   protected isNodeSelected = computed(() => {

@@ -5,7 +5,8 @@ const DEFAULT_HEIGHT = 600;
 const DEFAULT_MARGIN_TOP = 20;
 const DEFAULT_MARGIN_RIGHT = 40;
 const DEFAULT_MARGIN_BOTTOM = 20;
-const DEFAULT_MARGIN_LEFT = 20;
+const DEFAULT_MARGIN_LEFT = 40;
+const DEFAULT_ROOT_BRANCH_LENGTH = 20;
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class SvgSettingsService {
   readonly marginRight = signal<number>(DEFAULT_MARGIN_RIGHT);
   readonly marginBottom = signal<number>(DEFAULT_MARGIN_BOTTOM);
   readonly marginLeft = signal<number>(DEFAULT_MARGIN_LEFT);
+  readonly rootBranchLength = signal<number>(DEFAULT_ROOT_BRANCH_LENGTH);
 
   // Computed values for layout dimensions
   readonly layoutWidth = computed(
@@ -33,5 +35,6 @@ export class SvgSettingsService {
     this.marginRight.set(DEFAULT_MARGIN_RIGHT);
     this.marginBottom.set(DEFAULT_MARGIN_BOTTOM);
     this.marginLeft.set(DEFAULT_MARGIN_LEFT);
+    this.rootBranchLength.set(DEFAULT_ROOT_BRANCH_LENGTH);
   }
 }
