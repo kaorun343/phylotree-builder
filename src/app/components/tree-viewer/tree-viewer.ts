@@ -124,4 +124,24 @@ export class TreeViewer {
       this.treeService.clearSelection();
     }
   }
+
+  // Branch label positioning methods
+  protected getBranchLabelX(branch: { parent: VisualNode; child: VisualNode; id: string }): number {
+    // Position at the center of the horizontal line
+    return (branch.parent.position.x + branch.child.position.x) / 2;
+  }
+
+  protected getBranchLabelY(branch: { parent: VisualNode; child: VisualNode; id: string }): number {
+    // Position at the horizontal line (child's Y coordinate)
+    return branch.child.position.y;
+  }
+
+  protected getBranchLabelBaseline(branch: { parent: VisualNode; child: VisualNode; id: string }): string {
+    const parentY = branch.parent.position.y;
+    const childY = branch.child.position.y;
+    
+    // If child is below parent (parentY < childY), label goes to top
+    // If child is above parent (parentY > childY), label goes to bottom
+    return parentY < childY ? 'text-after-edge' : 'text-before-edge';
+  }
 }

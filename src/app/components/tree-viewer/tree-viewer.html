@@ -48,10 +48,24 @@
         [class.selected-label]="isNodeSelected()(node.id)"
       >
         {{ node.name }}
-        @if (node.branchLength) {
-        <tspan class="branch-length">:{{ node.branchLength }}</tspan>
-        }
       </text>
+      }
+    </g>
+
+    <!-- Draw branch length labels -->
+    <g class="branch-labels" [attr.transform]="marginTransform()">
+      @for (branch of visibleBranches(); track branch.id) {
+      @if (branch.child.branchLength) {
+      <text
+        [attr.x]="getBranchLabelX(branch)"
+        [attr.y]="getBranchLabelY(branch)"
+        class="branch-length-label"
+        [attr.text-anchor]="'middle'"
+        [attr.dominant-baseline]="getBranchLabelBaseline(branch)"
+      >
+        {{ branch.child.branchLength }}
+      </text>
+      }
       }
     </g>
   </svg>

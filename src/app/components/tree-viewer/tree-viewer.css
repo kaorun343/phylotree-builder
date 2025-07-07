@@ -81,3 +81,11 @@
   fill: #ff9800;
   font-weight: bold;
 }
+
+.branch-length-label {
+  font-family: monospace;
+  font-size: 10px;
+  fill: #666;
+  user-select: none;
+  pointer-events: none;
+}
