@@ -13,8 +13,27 @@ import { TreeService } from '../../services/tree.service';
 export class EditorPanel {
   private treeService = inject(TreeService);
 
-  // Get the selected branch ID for passing as prop
+  // Computed properties for different editor states
+  protected selection = computed(() => this.treeService.selection());
+
+  protected showBranchEditor = computed(() => {
+    const selection = this.selection();
+    return selection?.type === 'branch';
+  });
+
+  protected showNodeEditor = computed(() => {
+    const selection = this.selection();
+    return selection?.type === 'node';
+  });
+
+  // Get the selected IDs for passing as props
   protected selectedBranchId = computed(() => {
-    return this.treeService.selectedBranchId();
+    const selection = this.selection();
+    return selection?.type === 'branch' ? selection.id : '';
+  });
+
+  protected selectedNodeId = computed(() => {
+    const selection = this.selection();
+    return selection?.type === 'node' ? selection.id : '';
   });
 }

@@ -20,7 +20,6 @@ export class TreeViewer {
 
   // Signal-based state
   protected tree = computed(() => this.treeService.currentTree());
-  protected selectedNodeId = signal<string | null>(null);
 
   // SVG dimensions from settings service
   protected svgWidth = computed(() => this.svgSettingsService.width());
@@ -51,7 +50,7 @@ export class TreeViewer {
   });
 
   protected isNodeSelected = computed(() => {
-    const selectedId = this.selectedNodeId();
+    const selectedId = this.treeService.selectedNodeId();
     return (nodeId: string): boolean => {
       return selectedId === nodeId;
     };
@@ -88,10 +87,12 @@ export class TreeViewer {
       }
     } else {
       // Regular click: Select/deselect for both leaf and internal nodes
-      const currentSelected = this.selectedNodeId();
-      this.selectedNodeId.set(currentSelected === node.id ? null : node.id);
-      // Clear branch selection when selecting nodes
-      this.treeService.clearBranchSelection();
+      const currentSelected = this.treeService.selectedNodeId();
+      if (currentSelected === node.id) {
+        this.treeService.clearSelection();
+      } else {
+        this.treeService.selectNode(node.id);
+      }
     }
   }
 
@@ -108,8 +109,6 @@ export class TreeViewer {
       if (parent) {
         const branchId = parent.id + '-' + node.id;
         this.treeService.selectBranch(branchId);
-        // Clear node selection when selecting branches
-        this.selectedNodeId.set(null);
       }
     }
   }

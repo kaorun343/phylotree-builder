@@ -1,5 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { PhylogeneticTree, TreeNode } from '../models/tree.types';
+
+export type Selection = 
+  | { type: 'branch'; id: string }
+  | { type: 'node'; id: string }
+  | null;
 
 /**
  * Minimal tree service for managing phylogenetic tree state
@@ -9,7 +14,7 @@ import { PhylogeneticTree, TreeNode } from '../models/tree.types';
 })
 export class TreeService {
   readonly currentTree = signal<PhylogeneticTree>(this.createSampleTree());
-  readonly selectedBranchId = signal<string | null>(null);
+  readonly selection = signal<Selection>(null);
 
   addLeafNode(targetNodeId: string): void {
     const currentTree = this.currentTree();
@@ -195,12 +200,27 @@ export class TreeService {
   }
 
   selectBranch(branchId: string): void {
-    this.selectedBranchId.set(branchId);
+    this.selection.set({ type: 'branch', id: branchId });
   }
 
-  clearBranchSelection(): void {
-    this.selectedBranchId.set(null);
+  selectNode(nodeId: string): void {
+    this.selection.set({ type: 'node', id: nodeId });
   }
+
+  clearSelection(): void {
+    this.selection.set(null);
+  }
+
+  // Computed helpers for backward compatibility
+  readonly selectedBranchId = computed(() => {
+    const selection = this.selection();
+    return selection?.type === 'branch' ? selection.id : null;
+  });
+
+  readonly selectedNodeId = computed(() => {
+    const selection = this.selection();
+    return selection?.type === 'node' ? selection.id : null;
+  });
 
   private generateNodeId(tree: PhylogeneticTree, isInternal: boolean): string {
     const prefix = isInternal ? 'internal' : 'leaf';
