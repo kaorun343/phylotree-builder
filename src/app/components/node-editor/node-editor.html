@@ -1,0 +1,94 @@
+<div class="node-editor">
+  <div class="node-settings-panel">
+    <div class="panel-header">
+      <h3>Node Settings</h3>
+      <p>Configure the selected node properties</p>
+    </div>
+
+    <div class="settings-form">
+      <!-- Node Information Section -->
+      <div class="settings-section">
+        <h4>Node Information</h4>
+
+        <mat-card class="node-info-card">
+          <mat-card-content>
+            <div class="node-details">
+              <div class="node-type">
+                <mat-icon>{{
+                  selectedNodeData().children.length === 0
+                    ? "circle"
+                    : "account_tree"
+                }}</mat-icon>
+                <span class="type-label">{{ nodeType() }}</span>
+              </div>
+              <div class="node-stats">
+                <div class="stat">
+                  <span class="stat-label">Depth:</span>
+                  <span class="stat-value">{{ nodeDepth() }}</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">Children:</span>
+                  <span class="stat-value">{{ childCount() }}</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <hr class="section-divider" />
+
+      <!-- Node Properties Section -->
+      <div class="settings-section">
+        <h4>Node Properties</h4>
+
+        <!-- Node Name -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Node Name</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="nodeNameValue"
+            placeholder="Enter node name"
+          />
+          <mat-icon matSuffix>label</mat-icon>
+          <mat-hint>Display name for this node</mat-hint>
+        </mat-form-field>
+
+        <!-- Node ID (read-only) -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Node ID</mat-label>
+          <input
+            matInput
+            type="text"
+            [value]="selectedNodeData().id"
+            readonly
+          />
+          <mat-icon matSuffix>fingerprint</mat-icon>
+          <mat-hint>Unique identifier (read-only)</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <hr class="section-divider" />
+
+      <!-- Node Actions Section -->
+      <div class="settings-section">
+        <h4>Node Actions</h4>
+
+        <div class="action-buttons">
+          <button mat-raised-button (click)="onResetNodeName()">
+            <mat-icon>refresh</mat-icon>
+            Reset Name
+          </button>
+
+          @if (selectedNodeData().id !== 'root') {
+          <button mat-raised-button color="warn" (click)="onRemoveNode()">
+            <mat-icon>delete</mat-icon>
+            Remove Node
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

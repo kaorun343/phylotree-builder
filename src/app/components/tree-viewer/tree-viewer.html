@@ -58,6 +58,7 @@
         [attr.y]="node.position.y + 5"
         class="node-label"
         [class.selected-label]="isNodeSelected()(node.id)"
+        (click)="onNodeClick(node, $event)"
       >
         {{ node.name }}
       </text>

@@ -2,11 +2,12 @@ import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeEditor } from '../tree-editor/tree-editor';
 import { BranchEditor } from '../branch-editor/branch-editor';
+import { NodeEditor } from '../node-editor/node-editor';
 import { TreeService } from '../../services/tree.service';
 
 @Component({
   selector: 'app-editor-panel',
-  imports: [CommonModule, TreeEditor, BranchEditor],
+  imports: [CommonModule, TreeEditor, BranchEditor, NodeEditor],
   templateUrl: './editor-panel.html',
   styleUrl: './editor-panel.css',
 })

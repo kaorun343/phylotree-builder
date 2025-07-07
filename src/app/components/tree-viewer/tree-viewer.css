@@ -73,7 +73,8 @@
   font-size: 12px;
   fill: #333;
   user-select: none;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .node-label.selected-label {

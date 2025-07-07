@@ -1,8 +1,7 @@
 @if (showBranchEditor()) {
 <app-branch-editor [selectedBranchId]="selectedBranchId()"></app-branch-editor>
 } @else if (showNodeEditor()) {
-<!-- NodeEditor will be implemented here -->
-<div>Node Editor (TODO)</div>
+<app-node-editor [selectedNodeId]="selectedNodeId()"></app-node-editor>
 } @else {
 <app-tree-editor></app-tree-editor>
 }
