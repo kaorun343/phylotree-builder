@@ -90,6 +90,8 @@ export class TreeViewer {
       // Regular click: Select/deselect for both leaf and internal nodes
       const currentSelected = this.selectedNodeId();
       this.selectedNodeId.set(currentSelected === node.id ? null : node.id);
+      // Clear branch selection when selecting nodes
+      this.treeService.clearBranchSelection();
     }
   }
 
@@ -97,6 +99,16 @@ export class TreeViewer {
   protected onEdgeClick(node: VisualNode, event: MouseEvent): void {
     if (event.ctrlKey || event.metaKey) {
       this.treeService.addLeafNode(node.id);
+    } else {
+      // Regular click: Select the branch for editing
+      // Find the parent of this node to construct the branch ID
+      const parent = this.visualNodes().find(n => n.children.includes(node.id));
+      if (parent) {
+        const branchId = parent.id + '-' + node.id;
+        this.treeService.selectBranch(branchId);
+        // Clear node selection when selecting branches
+        this.selectedNodeId.set(null);
+      }
     }
   }
 }

@@ -9,6 +9,7 @@ import { PhylogeneticTree, TreeNode } from '../models/tree.types';
 })
 export class TreeService {
   readonly currentTree = signal<PhylogeneticTree>(this.createSampleTree());
+  readonly selectedBranchId = signal<string | null>(null);
 
   addLeafNode(targetNodeId: string): void {
     const currentTree = this.currentTree();
@@ -106,6 +107,103 @@ export class TreeService {
       ...currentTree,
       nodes: new Map(currentTree.nodes),
     });
+  }
+
+  updateNodeBranchLength(nodeId: string, branchLength: number): void {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node) return;
+
+    node.branchLength = branchLength;
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
+  addInternalNode(parentNodeId: string, childNodeId: string): void {
+    const currentTree = this.currentTree();
+    const parentNode = currentTree.nodes.get(parentNodeId);
+    const childNode = currentTree.nodes.get(childNodeId);
+    
+    if (!parentNode || !childNode) return;
+
+    // Generate unique ID for new internal node
+    const newInternalId = this.generateNodeId(currentTree, true);
+
+    // Calculate new branch lengths (half of original)
+    const originalBranchLength = childNode.branchLength || 0;
+    const newBranchLength = originalBranchLength / 2;
+
+    // Create new internal node
+    const newInternal: TreeNode = {
+      id: newInternalId,
+      parent: parentNodeId,
+      children: [childNodeId],
+      isLeaf: false,
+      branchLength: newBranchLength,
+    };
+
+    // Update parent's children to point to new internal node
+    const childIndex = parentNode.children.indexOf(childNodeId);
+    if (childIndex !== -1) {
+      parentNode.children[childIndex] = newInternalId;
+    }
+
+    // Update child node
+    childNode.parent = newInternalId;
+    childNode.branchLength = newBranchLength;
+
+    // Add new internal node to tree
+    currentTree.nodes.set(newInternalId, newInternal);
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
+  removeNode(nodeId: string): void {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node) return;
+
+    // Don't allow removing the root node
+    if (nodeId === currentTree.rootId) return;
+
+    const parentNode = node.parent ? currentTree.nodes.get(node.parent) : null;
+    if (!parentNode) return;
+
+    // Remove node from parent's children
+    const nodeIndex = parentNode.children.indexOf(nodeId);
+    if (nodeIndex !== -1) {
+      parentNode.children.splice(nodeIndex, 1);
+    }
+
+    // Remove node from tree
+    currentTree.nodes.delete(nodeId);
+
+    // If node had children, remove them too (recursive)
+    node.children.forEach(childId => {
+      this.removeNode(childId);
+    });
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
+  selectBranch(branchId: string): void {
+    this.selectedBranchId.set(branchId);
+  }
+
+  clearBranchSelection(): void {
+    this.selectedBranchId.set(null);
   }
 
   private generateNodeId(tree: PhylogeneticTree, isInternal: boolean): string {

@@ -1,0 +1,107 @@
+<div class="branch-editor">
+  <div class="branch-settings-panel">
+    <div class="panel-header">
+      <h3>Branch Settings</h3>
+      <p>Configure the selected branch properties</p>
+    </div>
+
+    <div class="settings-form">
+      <!-- Branch Information Section -->
+      <div class="settings-section">
+        <h4>Branch Information</h4>
+        
+        <mat-card class="branch-info-card">
+          <mat-card-content>
+            <div class="branch-relationship">
+              <div class="node-info">
+                <mat-icon>account_tree</mat-icon>
+                <span class="node-name">{{ parentNodeName() }}</span>
+              </div>
+              <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+              <div class="node-info">
+                <mat-icon>{{ selectedBranchData().child.isLeaf ? 'circle' : 'account_tree' }}</mat-icon>
+                <span class="node-name">{{ childNodeName() }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Branch Properties Section -->
+      <div class="settings-section">
+        <h4>Branch Properties</h4>
+        
+        <!-- Branch Length -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Branch Length</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="branchLengthValue"
+            placeholder="Enter branch length"
+            step="0.1"
+            min="0"
+          />
+          <mat-icon matSuffix>timeline</mat-icon>
+          <mat-hint>Evolutionary distance to parent</mat-hint>
+        </mat-form-field>
+
+        <!-- Branch Support (placeholder for future) -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Branch Support</mat-label>
+          <input
+            matInput
+            type="number"
+            value="1.0"
+            placeholder="Enter support value"
+            step="0.01"
+            min="0"
+            max="1"
+            disabled
+          />
+          <mat-icon matSuffix>verified</mat-icon>
+          <mat-hint>Statistical support (0-1)</mat-hint>
+        </mat-form-field>
+
+        <!-- Branch Label (placeholder for future) -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Branch Label</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Enter branch annotation"
+            disabled
+          />
+          <mat-icon matSuffix>label</mat-icon>
+          <mat-hint>Optional branch annotation</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- Branch Actions Section -->
+      <div class="settings-section">
+        <h4>Branch Actions</h4>
+        
+        <div class="action-buttons">
+          <button mat-raised-button color="primary" (click)="onSplitBranch()">
+            <mat-icon>call_split</mat-icon>
+            Split Branch
+          </button>
+          
+          <button mat-raised-button (click)="onResetBranchLength()">
+            <mat-icon>refresh</mat-icon>
+            Reset Length
+          </button>
+          
+          <button mat-raised-button color="warn" (click)="onRemoveBranch()">
+            <mat-icon>delete</mat-icon>
+            Remove Branch
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
