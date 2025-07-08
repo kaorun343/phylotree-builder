@@ -2,7 +2,7 @@
   <svg
     [attr.width]="svgWidth()"
     [attr.height]="svgHeight()"
-    class="tree-svg"
+    [class]="treeSvgClass"
     (click)="onSvgClick($event)"
   >
     <!-- Draw branches -->
@@ -17,6 +17,7 @@
         class="branch root-branch"
         stroke="#666"
         stroke-width="2"
+        fill="none"
       ></line>
       } @for (branch of visibleBranches(); track branch.id) {
       <path
@@ -25,6 +26,7 @@
         [attr.stroke]="branch.child.color || '#666'"
         stroke-width="2"
         fill="none"
+        [style.cursor]="currentMode() === 'author' ? 'pointer' : 'default'"
         (click)="onEdgeClick(branch.child, $event)"
       ></path>
       }
@@ -50,6 +52,10 @@
         [attr.cy]="node.position.y"
         [attr.r]="getNodeRadius()(node)"
         [attr.class]="getNodeClasses()(node)"
+        [attr.fill]="getNodeStyles()(node)['fill']"
+        [attr.stroke]="getNodeStyles()(node)['stroke']"
+        [attr.stroke-width]="getNodeStyles()(node)['stroke-width']"
+        [style.cursor]="getNodeStyles()(node)['cursor']"
         (click)="onNodeClick(node, $event)"
       ></circle>
       }
@@ -59,7 +65,23 @@
         [attr.x]="node.position.x + 10"
         [attr.y]="node.position.y + 5"
         class="node-label"
-        [class.selected-label]="currentMode() === 'author' && isNodeSelected()(node.id)"
+        [class.selected-label]="
+          currentMode() === 'author' && isNodeSelected()(node.id)
+        "
+        font-family="monospace"
+        font-size="12"
+        [attr.fill]="
+          currentMode() === 'author' && isNodeSelected()(node.id)
+            ? '#ff9800'
+            : '#333'
+        "
+        [attr.font-weight]="
+          currentMode() === 'author' && isNodeSelected()(node.id)
+            ? 'bold'
+            : 'normal'
+        "
+        [style.cursor]="currentMode() === 'author' ? 'pointer' : 'default'"
+        style="user-select: none"
         (click)="onNodeClick(node, $event)"
       >
         {{ node.name }}
@@ -77,6 +99,10 @@
         class="branch-length-label"
         [attr.text-anchor]="'middle'"
         [attr.dominant-baseline]="getBranchLabelBaseline(branch)"
+        font-family="monospace"
+        font-size="10"
+        fill="#666"
+        style="user-select: none; pointer-events: none"
       >
         {{ branch.child.branchLength }}
       </text>

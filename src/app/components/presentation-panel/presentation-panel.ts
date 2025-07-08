@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { SvgExportService } from '../../services/svg-export.service';
 
 @Component({
   selector: 'app-presentation-panel',
@@ -10,9 +11,12 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrl: './presentation-panel.css',
 })
 export class PresentationPanel {
+  private svgExportService = inject(SvgExportService);
+  
   downloadSVG(): void {
-    // TODO: Implement SVG export functionality
-    console.log('SVG export not yet implemented');
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+    const filename = `phylogenetic-tree-${timestamp}`;
+    this.svgExportService.exportSVG(filename);
   }
 
   downloadPNG(): void {

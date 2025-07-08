@@ -4,6 +4,7 @@ import { TreeService } from '../../services/tree.service';
 import { TreeViewerService } from '../../services/tree-viewer.service';
 import { SvgSettingsService } from '../../services/svg-settings.service';
 import { ModeService } from '../../services/mode.service';
+import { ConstantsService } from '../../services/constants.service';
 import { VisualNode } from '../../models/tree.types';
 import { BranchPathPipe } from '../../pipes/branch-path-pipe';
 
@@ -19,10 +20,12 @@ export class TreeViewer {
   private treeViewerService = inject(TreeViewerService);
   private svgSettingsService = inject(SvgSettingsService);
   private modeService = inject(ModeService);
+  private constantsService = inject(ConstantsService);
 
   // Signal-based state
   protected tree = computed(() => this.treeService.currentTree());
   protected currentMode = this.modeService.currentMode;
+  protected treeSvgClass = this.constantsService.TREE_SVG_CLASS;
 
   // SVG dimensions from settings service
   protected svgWidth = computed(() => this.svgSettingsService.width());
@@ -56,22 +59,22 @@ export class TreeViewer {
   protected rootBranch = computed(() => {
     const rootBranchLength = this.svgSettingsService.rootBranchLength();
     const nodes = this.visualNodes();
-    
+
     const tree = this.tree();
-    const rootNode = nodes.find(node => node.id === tree.rootId);
+    const rootNode = nodes.find((node) => node.id === tree.rootId);
     if (!rootNode) return null;
 
     // Root branch extends to the left by the specified pixel length
     return {
       start: {
         x: rootNode.position.x - rootBranchLength,
-        y: rootNode.position.y
+        y: rootNode.position.y,
       },
       end: {
         x: rootNode.position.x,
-        y: rootNode.position.y
+        y: rootNode.position.y,
       },
-      length: rootBranchLength
+      length: rootBranchLength,
     };
   });
 
@@ -101,6 +104,25 @@ export class TreeViewer {
       else classes.push('internal-node');
       if (isSelected(node.id)) classes.push('selected');
       return classes.join(' ');
+    };
+  });
+
+  protected getNodeStyles = computed(() => {
+    const isSelected = this.isNodeSelected();
+    const currentMode = this.currentMode();
+
+    return (node: VisualNode): Record<string, string> => {
+      const isLeaf = node.children.length === 0;
+      const selected = isSelected(node.id);
+
+      const baseStyles = {
+        cursor: currentMode === 'author' ? 'pointer' : 'default',
+        fill: isLeaf ? '#4caf50' : '#2196f3',
+        stroke: isLeaf ? '#2e7d32' : '#1565c0',
+        'stroke-width': selected ? '4' : '2',
+      };
+
+      return baseStyles;
     };
   });
 
@@ -157,26 +179,41 @@ export class TreeViewer {
   protected onSvgClick(event: MouseEvent): void {
     // Only clear if clicking directly on the SVG (not on child elements)
     // and only in Author mode
-    if (event.target === event.currentTarget && this.currentMode() === 'author') {
+    if (
+      event.target === event.currentTarget &&
+      this.currentMode() === 'author'
+    ) {
       this.treeService.clearSelection();
     }
   }
 
   // Branch label positioning methods
-  protected getBranchLabelX(branch: { parent: VisualNode; child: VisualNode; id: string }): number {
+  protected getBranchLabelX(branch: {
+    parent: VisualNode;
+    child: VisualNode;
+    id: string;
+  }): number {
     // Position at the center of the horizontal line
     return (branch.parent.position.x + branch.child.position.x) / 2;
   }
 
-  protected getBranchLabelY(branch: { parent: VisualNode; child: VisualNode; id: string }): number {
+  protected getBranchLabelY(branch: {
+    parent: VisualNode;
+    child: VisualNode;
+    id: string;
+  }): number {
     // Position at the horizontal line (child's Y coordinate)
     return branch.child.position.y;
   }
 
-  protected getBranchLabelBaseline(branch: { parent: VisualNode; child: VisualNode; id: string }): string {
+  protected getBranchLabelBaseline(branch: {
+    parent: VisualNode;
+    child: VisualNode;
+    id: string;
+  }): string {
     const parentY = branch.parent.position.y;
     const childY = branch.child.position.y;
-    
+
     // If child is below parent (parentY < childY), label goes to top
     // If child is above parent (parentY > childY), label goes to bottom
     return parentY < childY ? 'text-after-edge' : 'text-before-edge';
