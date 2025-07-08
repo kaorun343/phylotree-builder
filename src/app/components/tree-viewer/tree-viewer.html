@@ -89,7 +89,8 @@
       }
     </g>
 
-    <!-- Draw branch length labels -->
+    <!-- Draw branch length labels - Only in Author mode -->
+    @if (currentMode() === 'author') {
     <g class="branch-labels" [attr.transform]="marginTransform()">
       @for (branch of visibleBranches(); track branch.id) { @if
       (branch.child.branchLength) {
@@ -108,5 +109,6 @@
       </text>
       } }
     </g>
+    }
   </svg>
 </div>
