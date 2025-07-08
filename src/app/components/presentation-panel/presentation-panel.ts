@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { SvgExportService } from '../../services/svg-export.service';
+import { ExportService } from '../../services/export.service';
 
 @Component({
   selector: 'app-presentation-panel',
@@ -11,16 +11,17 @@ import { SvgExportService } from '../../services/svg-export.service';
   styleUrl: './presentation-panel.css',
 })
 export class PresentationPanel {
-  private svgExportService = inject(SvgExportService);
+  private exportService = inject(ExportService);
   
   downloadSVG(): void {
     const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
     const filename = `phylogenetic-tree-${timestamp}`;
-    this.svgExportService.exportSVG(filename);
+    this.exportService.exportSVG(filename);
   }
 
   downloadPNG(): void {
-    // TODO: Implement PNG export functionality
-    console.log('PNG export not yet implemented');
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+    const filename = `phylogenetic-tree-${timestamp}`;
+    this.exportService.exportPNG(filename);
   }
 }
