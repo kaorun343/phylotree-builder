@@ -12,9 +12,11 @@
   font-weight: 500;
 }
 
-.export-options {
+.leaf-count {
   text-align: center;
   color: #666;
+  font-weight: 500;
+  font-family: monospace;
 }
 
 .metadata {
