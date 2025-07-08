@@ -1,7 +1,9 @@
-@if (showBranchEditor()) {
+@if (showPresentationPanel()) {
+<app-presentation-panel></app-presentation-panel>
+} @else if (showBranchEditor()) {
 <app-branch-editor [selectedBranchId]="selectedBranchId()"></app-branch-editor>
 } @else if (showNodeEditor()) {
 <app-node-editor [selectedNodeId]="selectedNodeId()"></app-node-editor>
-} @else {
+} @else if (showTreeEditor()) {
 <app-tree-editor></app-tree-editor>
 }

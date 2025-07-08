@@ -8,9 +8,24 @@
   margin-right: 1rem;
 }
 
-.nav-section {
+.mode-toggle {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.mode-toggle mat-button-toggle {
+  border: none;
+}
+
+.mode-toggle mat-button-toggle-group {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.mode-toggle mat-icon {
+  margin-right: 0.5rem;
+  font-size: 1.125rem;
 }
 
 .action-buttons {

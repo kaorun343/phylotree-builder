@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TreeService } from '../../services/tree.service';
 import { TreeViewerService } from '../../services/tree-viewer.service';
 import { SvgSettingsService } from '../../services/svg-settings.service';
+import { ModeService } from '../../services/mode.service';
 import { VisualNode } from '../../models/tree.types';
 import { BranchPathPipe } from '../../pipes/branch-path-pipe';
 
@@ -17,9 +18,11 @@ export class TreeViewer {
   private treeService = inject(TreeService);
   private treeViewerService = inject(TreeViewerService);
   private svgSettingsService = inject(SvgSettingsService);
+  private modeService = inject(ModeService);
 
   // Signal-based state
   protected tree = computed(() => this.treeService.currentTree());
+  protected currentMode = this.modeService.currentMode;
 
   // SVG dimensions from settings service
   protected svgWidth = computed(() => this.svgSettingsService.width());
@@ -105,6 +108,11 @@ export class TreeViewer {
   protected onNodeClick(node: VisualNode, event: MouseEvent): void {
     event.stopPropagation(); // Prevent SVG click from firing
 
+    // Only allow interaction in Author mode
+    if (this.currentMode() !== 'author') {
+      return;
+    }
+
     if (event.ctrlKey || event.metaKey) {
       // Ctrl/Cmd + Click: Add new leaf to internal nodes only
       if (node.children.length > 0) {
@@ -125,6 +133,11 @@ export class TreeViewer {
   protected onEdgeClick(node: VisualNode, event: MouseEvent): void {
     event.stopPropagation(); // Prevent SVG click from firing
 
+    // Only allow interaction in Author mode
+    if (this.currentMode() !== 'author') {
+      return;
+    }
+
     if (event.ctrlKey || event.metaKey) {
       this.treeService.addLeafNode(node.id);
     } else {
@@ -143,7 +156,8 @@ export class TreeViewer {
   // Clear selection when clicking on empty space
   protected onSvgClick(event: MouseEvent): void {
     // Only clear if clicking directly on the SVG (not on child elements)
-    if (event.target === event.currentTarget) {
+    // and only in Author mode
+    if (event.target === event.currentTarget && this.currentMode() === 'author') {
       this.treeService.clearSelection();
     }
   }

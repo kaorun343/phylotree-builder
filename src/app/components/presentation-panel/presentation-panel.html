@@ -1,0 +1,61 @@
+<div class="presentation-panel">
+  <div class="panel-header">
+    <mat-icon class="panel-icon">present_to_all</mat-icon>
+    <h2>Presentation Mode</h2>
+  </div>
+
+  <div class="export-section">
+    <h3>
+      <mat-icon>download</mat-icon>
+      Export Options
+    </h3>
+    
+    <div class="export-buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="downloadSVG()"
+        class="export-button"
+      >
+        <mat-icon>image</mat-icon>
+        Download SVG
+      </button>
+      <p class="format-description">
+        Scalable vector graphics for publications
+      </p>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="downloadPNG()"
+        class="export-button"
+      >
+        <mat-icon>photo</mat-icon>
+        Download PNG
+      </button>
+      <p class="format-description">
+        High-quality images for presentations
+      </p>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="mode-info">
+    <h3>
+      <mat-icon>info</mat-icon>
+      About This Mode
+    </h3>
+    <p class="info-text">
+      This mode provides a clean, publication-ready view of your phylogenetic tree.
+    </p>
+    <ul class="feature-list">
+      <li>Node circles are hidden for cleaner appearance</li>
+      <li>Export in multiple formats</li>
+      <li>Optimized for sharing and publication</li>
+    </ul>
+    <p class="mode-tip">
+      Switch back to Author mode to continue editing.
+    </p>
+  </div>
+</div>

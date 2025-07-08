@@ -3,21 +3,25 @@
   
   <span class="spacer"></span>
   
-  <div class="nav-section">
-    <button mat-button>File</button>
-    <button mat-button>Edit</button>
-    <button mat-button>View</button>
+  <div class="mode-toggle">
+    <mat-button-toggle-group 
+      [value]="currentMode()" 
+      (change)="onModeChange($event.value)"
+      appearance="standard">
+      <mat-button-toggle value="author">
+        <mat-icon>edit</mat-icon>
+        Author
+      </mat-button-toggle>
+      <mat-button-toggle value="presentation">
+        <mat-icon>present_to_all</mat-icon>
+        Presentation
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
   
   <span class="spacer"></span>
   
   <div class="action-buttons">
-    <button mat-icon-button>
-      <mat-icon>save</mat-icon>
-    </button>
-    <button mat-icon-button>
-      <mat-icon>share</mat-icon>
-    </button>
     <button mat-icon-button>
       <mat-icon>settings</mat-icon>
     </button>
