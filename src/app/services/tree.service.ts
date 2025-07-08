@@ -279,7 +279,7 @@ export class TreeService {
       name: '',
       parent: 'root',
       children: ['leaf_5', 'internal_2'], // frog splits from amniotes
-      branchLength: 0.2,
+      branchLength: 2,
     });
 
     // Amniotes (eggs with shells)
@@ -288,7 +288,7 @@ export class TreeService {
       name: '',
       parent: 'internal_1',
       children: ['internal_3', 'internal_4'], // mammals split from reptiles+birds
-      branchLength: 0.2,
+      branchLength: 2,
     });
 
     // Mammals
@@ -297,7 +297,7 @@ export class TreeService {
       name: '',
       parent: 'internal_2',
       children: ['leaf_1', 'leaf_2'], // human and mouse
-      branchLength: 0.3,
+      branchLength: 3,
     });
 
     // Reptiles + Birds (Sauropsids)
@@ -306,7 +306,7 @@ export class TreeService {
       name: '',
       parent: 'internal_2',
       children: ['leaf_3', 'leaf_4'], // chicken and lizard
-      branchLength: 0.3,
+      branchLength: 3,
     });
 
     // Leaf nodes (all at same depth for UPGMA)
@@ -315,7 +315,7 @@ export class TreeService {
       name: 'Human',
       parent: 'internal_3',
       children: [],
-      branchLength: 0.3,
+      branchLength: 3,
     });
 
     nodes.set('leaf_2', {
@@ -323,7 +323,7 @@ export class TreeService {
       name: 'Mouse',
       parent: 'internal_3',
       children: [],
-      branchLength: 0.3,
+      branchLength: 3,
     });
 
     nodes.set('leaf_3', {
@@ -331,7 +331,7 @@ export class TreeService {
       name: 'Chicken',
       parent: 'internal_4',
       children: [],
-      branchLength: 0.3,
+      branchLength: 3,
     });
 
     nodes.set('leaf_4', {
@@ -339,7 +339,7 @@ export class TreeService {
       name: 'Lizard',
       parent: 'internal_4',
       children: [],
-      branchLength: 0.3,
+      branchLength: 3,
     });
 
     nodes.set('leaf_5', {
@@ -347,7 +347,7 @@ export class TreeService {
       name: 'Frog',
       parent: 'internal_1',
       children: [],
-      branchLength: 0.6,
+      branchLength: 6,
     });
 
     nodes.set('leaf_6', {
@@ -355,7 +355,7 @@ export class TreeService {
       name: 'Zebrafish',
       parent: 'root',
       children: [],
-      branchLength: 0.8,
+      branchLength: 8,
     });
 
     return {
