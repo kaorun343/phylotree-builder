@@ -8,9 +8,8 @@ export type TreeDirection =
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
-const DEFAULT_MARGIN_TOP = 20;
+const DEFAULT_MARGIN_PERPENDICULAR = 20;
 const DEFAULT_MARGIN_LEAF = 100;
-const DEFAULT_MARGIN_BOTTOM = 20;
 const DEFAULT_MARGIN_ROOT = 40;
 const DEFAULT_ROOT_BRANCH_LENGTH = 20;
 const DEFAULT_TREE_DIRECTION = 'left-to-right';
@@ -21,9 +20,8 @@ const DEFAULT_TREE_DIRECTION = 'left-to-right';
 export class SvgSettingsService {
   readonly width = signal<number>(DEFAULT_WIDTH);
   readonly height = signal<number>(DEFAULT_HEIGHT);
-  readonly marginTop = signal<number>(DEFAULT_MARGIN_TOP);
+  readonly marginPerpendicular = signal<number>(DEFAULT_MARGIN_PERPENDICULAR);
   readonly marginLeaf = signal<number>(DEFAULT_MARGIN_LEAF);
-  readonly marginBottom = signal<number>(DEFAULT_MARGIN_BOTTOM);
   readonly marginRoot = signal<number>(DEFAULT_MARGIN_ROOT);
   readonly rootBranchLength = signal<number>(DEFAULT_ROOT_BRANCH_LENGTH);
   readonly treeDirection = signal<TreeDirection>(DEFAULT_TREE_DIRECTION);
@@ -33,15 +31,14 @@ export class SvgSettingsService {
     () => this.width() - this.marginRoot() - this.marginLeaf()
   );
   readonly layoutHeight = computed(
-    () => this.height() - this.marginTop() - this.marginBottom()
+    () => this.height() - this.marginPerpendicular() * 2
   );
 
   reset(): void {
     this.width.set(DEFAULT_WIDTH);
     this.height.set(DEFAULT_HEIGHT);
-    this.marginTop.set(DEFAULT_MARGIN_TOP);
+    this.marginPerpendicular.set(DEFAULT_MARGIN_PERPENDICULAR);
     this.marginLeaf.set(DEFAULT_MARGIN_LEAF);
-    this.marginBottom.set(DEFAULT_MARGIN_BOTTOM);
     this.marginRoot.set(DEFAULT_MARGIN_ROOT);
     this.rootBranchLength.set(DEFAULT_ROOT_BRANCH_LENGTH);
     this.treeDirection.set(DEFAULT_TREE_DIRECTION);

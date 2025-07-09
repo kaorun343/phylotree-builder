@@ -40,7 +40,7 @@ export class TreeViewer {
 
   // SVG transform for margin positioning
   protected marginTransform = computed(() => {
-    const marginTop = this.svgSettingsService.marginTop();
+    const marginTop = this.svgSettingsService.marginPerpendicular();
     return `translate(${this.marginLeft()},${marginTop})`;
   });
 

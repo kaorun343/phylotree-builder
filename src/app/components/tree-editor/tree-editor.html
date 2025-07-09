@@ -48,61 +48,48 @@
             <div class="settings-section">
               <h4>Margins</h4>
 
-              <div class="two-column-fields">
-                <!-- Top Margin -->
-                <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Top Margin (Top Side)</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="marginTop"
-                    placeholder="Enter top margin (top side)"
-                  />
-                  <mat-icon matSuffix>keyboard_arrow_up</mat-icon>
-                  <mat-hint>Top margin in pixels</mat-hint>
-                </mat-form-field>
+              <!-- Root Side Margin -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Root Side Margin (Left Side)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="marginRoot"
+                  placeholder="Enter root side margin (left side)"
+                />
+                <mat-icon matSuffix>keyboard_arrow_left</mat-icon>
+                <mat-hint>Left margin in pixels</mat-hint>
+              </mat-form-field>
 
-                <!-- Right Margin -->
-                <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Leaf Side Margin (Right Side)</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="marginLeaf"
-                    placeholder="Enter leaf side margin (right side)"
-                  />
-                  <mat-icon matSuffix>keyboard_arrow_right</mat-icon>
-                  <mat-hint>Right margin in pixels</mat-hint>
-                </mat-form-field>
-              </div>
+              <!-- Leaf Side Margin -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Leaf Side Margin (Right Side)</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="marginLeaf"
+                  placeholder="Enter leaf side margin (right side)"
+                />
+                <mat-icon matSuffix>keyboard_arrow_right</mat-icon>
+                <mat-hint>Right margin in pixels</mat-hint>
+              </mat-form-field>
 
-              <div class="two-column-fields">
-                <!-- Bottom Margin -->
-                <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Bottom Margin (Bottom Side)</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="marginBottom"
-                    placeholder="Enter bottom margin (bottom side)"
-                  />
-                  <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
-                  <mat-hint>Bottom margin in pixels</mat-hint>
-                </mat-form-field>
-
-                <!-- Root Side Margin -->
-                <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Root Side Margin (Left Side)</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="marginRoot"
-                    placeholder="Enter root side margin (left side)"
-                  />
-                  <mat-icon matSuffix>keyboard_arrow_left</mat-icon>
-                  <mat-hint>Left margin in pixels</mat-hint>
-                </mat-form-field>
-              </div>
+              <!-- Perpendicular Margins -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label
+                  >Perpendicular Margins (Top & Bottom Sides)</mat-label
+                >
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="marginPerpendicular"
+                  placeholder="Enter perpendicular margins (top & bottom sides)"
+                />
+                <mat-icon matSuffix>expand_more</mat-icon>
+                <mat-hint>
+                  Margins perpendicular to tree growth direction in pixels
+                </mat-hint>
+              </mat-form-field>
             </div>
 
             <hr class="section-divider" />

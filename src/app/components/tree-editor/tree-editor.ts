@@ -40,16 +40,12 @@ export class TreeEditor {
     return this.svgSettingsService.height;
   }
 
-  get marginTop() {
-    return this.svgSettingsService.marginTop;
+  get marginPerpendicular() {
+    return this.svgSettingsService.marginPerpendicular;
   }
 
   get marginLeaf() {
     return this.svgSettingsService.marginLeaf;
-  }
-
-  get marginBottom() {
-    return this.svgSettingsService.marginBottom;
   }
 
   get marginRoot() {
