@@ -67,6 +67,53 @@ export class TreeEditor {
     { value: 'bottom-to-top', label: 'Bottom to Top' },
   ];
 
+  // Dynamic labels based on current tree direction
+  get rootSidePhysicalDirection() {
+    const direction = this.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+        return 'Left Side';
+      case 'right-to-left':
+        return 'Right Side';
+      case 'top-to-bottom':
+        return 'Top Side';
+      case 'bottom-to-top':
+        return 'Bottom Side';
+      default:
+        return 'Left Side';
+    }
+  }
+
+  get leafSidePhysicalDirection() {
+    const direction = this.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+        return 'Right Side';
+      case 'right-to-left':
+        return 'Left Side';
+      case 'top-to-bottom':
+        return 'Bottom Side';
+      case 'bottom-to-top':
+        return 'Top Side';
+      default:
+        return 'Right Side';
+    }
+  }
+
+  get perpendicularPhysicalDirections() {
+    const direction = this.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return 'Top & Bottom Sides';
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        return 'Left & Right Sides';
+      default:
+        return 'Top & Bottom Sides';
+    }
+  }
+
   resetToDefaults(): void {
     this.svgSettingsService.reset();
   }

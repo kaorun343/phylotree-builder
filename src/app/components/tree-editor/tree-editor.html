@@ -50,45 +50,41 @@
 
               <!-- Root Side Margin -->
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Root Side Margin (Left Side)</mat-label>
+                <mat-label>Root Side Margin ({{ rootSidePhysicalDirection }})</mat-label>
                 <input
                   matInput
                   type="number"
                   [(ngModel)]="marginRoot"
-                  placeholder="Enter root side margin (left side)"
+                  placeholder="Enter root side margin ({{ rootSidePhysicalDirection.toLowerCase() }})"
                 />
                 <mat-icon matSuffix>keyboard_arrow_left</mat-icon>
-                <mat-hint>Left margin in pixels</mat-hint>
+                <mat-hint>{{ rootSidePhysicalDirection }} margin in pixels</mat-hint>
               </mat-form-field>
 
               <!-- Leaf Side Margin -->
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Leaf Side Margin (Right Side)</mat-label>
+                <mat-label>Leaf Side Margin ({{ leafSidePhysicalDirection }})</mat-label>
                 <input
                   matInput
                   type="number"
                   [(ngModel)]="marginLeaf"
-                  placeholder="Enter leaf side margin (right side)"
+                  placeholder="Enter leaf side margin ({{ leafSidePhysicalDirection.toLowerCase() }})"
                 />
                 <mat-icon matSuffix>keyboard_arrow_right</mat-icon>
-                <mat-hint>Right margin in pixels</mat-hint>
+                <mat-hint>{{ leafSidePhysicalDirection }} margin in pixels</mat-hint>
               </mat-form-field>
 
               <!-- Perpendicular Margins -->
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label
-                  >Perpendicular Margins (Top & Bottom Sides)</mat-label
-                >
+                <mat-label>Perpendicular Margins ({{ perpendicularPhysicalDirections }})</mat-label>
                 <input
                   matInput
                   type="number"
                   [(ngModel)]="marginPerpendicular"
-                  placeholder="Enter perpendicular margins (top & bottom sides)"
+                  placeholder="Enter perpendicular margins ({{ perpendicularPhysicalDirections.toLowerCase() }})"
                 />
                 <mat-icon matSuffix>expand_more</mat-icon>
-                <mat-hint>
-                  Margins perpendicular to tree growth direction in pixels
-                </mat-hint>
+                <mat-hint>{{ perpendicularPhysicalDirections }} margins in pixels</mat-hint>
               </mat-form-field>
             </div>
 
