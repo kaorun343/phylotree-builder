@@ -1,7 +1,7 @@
 import { Injectable, inject, computed } from '@angular/core';
 import { hierarchy, cluster, HierarchyNode } from 'd3-hierarchy';
 import { TreeNode } from '../models/tree.types';
-import { SvgSettingsService } from './svg-settings.service';
+import { SvgSettingsService, TreeDirection } from './svg-settings.service';
 import { TreeService } from './tree.service';
 
 export interface D3TreeNode {
@@ -39,14 +39,12 @@ export class TreeViewerService {
   private d3ClusterLayout = computed(() => {
     // Create hierarchy from computed d3 tree data
     const root = hierarchy(this.d3TreeData());
+    const direction = this.svgSettingsService.treeDirection();
 
-    // Apply cluster layout
+    // Apply cluster layout with direction-specific size
     const clusterLayout = cluster<D3TreeNode>()
       .separation(() => 1)
-      .size([
-        this.svgSettingsService.layoutHeight(),
-        this.svgSettingsService.layoutWidth(),
-      ]);
+      .size(this.getClusterSize(direction));
 
     return clusterLayout(root);
   });
@@ -54,8 +52,9 @@ export class TreeViewerService {
   // Computed visual nodes that automatically update when layout changes
   readonly visualNodes = computed(() => {
     const d3Root = this.d3ClusterLayout();
+    const direction = this.svgSettingsService.treeDirection();
 
-    // Calculate branch length-based horizontal positions
+    // Calculate branch length-based positions
     const nodePositions = new Map<string, { x: number; y: number }>();
 
     // First pass: calculate cumulative distances from root based on branch lengths
@@ -67,7 +66,7 @@ export class TreeViewerService {
         cumulativeDistance + (node.data.branchLength || 0);
       nodePositions.set(node.data.id, {
         x: currentDistance,
-        y: node.x, // Use d3 cluster's vertical positioning
+        y: node.x, // Use d3 cluster's perpendicular positioning
       });
 
       node.children?.forEach((child) => {
@@ -81,12 +80,11 @@ export class TreeViewerService {
     const maxDistance = Math.max(
       ...Array.from(nodePositions.values()).map((pos) => pos.x)
     );
-    const layoutWidth = this.svgSettingsService.layoutWidth();
 
     return d3Root.descendants().map((d3Node) => {
       const pos = nodePositions.get(d3Node.data.id)!;
-      const normalizedX =
-        maxDistance > 0 ? (pos.x / maxDistance) * layoutWidth : 0;
+      const normalizedDistance =
+        maxDistance > 0 ? pos.x / maxDistance : 0;
 
       return {
         id: d3Node.data.id,
@@ -95,14 +93,70 @@ export class TreeViewerService {
         color: d3Node.data.color,
         children: d3Node.children?.map((child) => child.data.id) || [],
         parent: d3Node.parent?.data.id,
-        position: {
-          x: normalizedX,
-          y: pos.y,
-        },
+        position: this.calculateNodePosition(direction, normalizedDistance, pos.y),
         depth: d3Node.depth,
       };
     });
   });
+
+  /**
+   * Get cluster size based on tree direction
+   */
+  private getClusterSize(direction: TreeDirection): [number, number] {
+    const layoutWidth = this.svgSettingsService.layoutWidth();
+    const layoutHeight = this.svgSettingsService.layoutHeight();
+
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return [layoutHeight, layoutWidth];
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        return [layoutWidth, layoutHeight];
+      default:
+        return [layoutHeight, layoutWidth];
+    }
+  }
+
+  /**
+   * Calculate node position based on direction
+   */
+  private calculateNodePosition(
+    direction: TreeDirection,
+    normalizedDistance: number,
+    clusterPosition: number
+  ): { x: number; y: number } {
+    const layoutWidth = this.svgSettingsService.layoutWidth();
+    const layoutHeight = this.svgSettingsService.layoutHeight();
+
+    switch (direction) {
+      case 'left-to-right':
+        return {
+          x: normalizedDistance * layoutWidth,
+          y: clusterPosition,
+        };
+      case 'right-to-left':
+        return {
+          x: layoutWidth - normalizedDistance * layoutWidth,
+          y: clusterPosition,
+        };
+      case 'top-to-bottom':
+        return {
+          x: clusterPosition,
+          y: normalizedDistance * layoutHeight,
+        };
+      case 'bottom-to-top':
+        return {
+          x: clusterPosition,
+          y: layoutHeight - normalizedDistance * layoutHeight,
+        };
+      default:
+        return {
+          x: normalizedDistance * layoutWidth,
+          y: clusterPosition,
+        };
+    }
+  }
 
   /**
    * Recursively build d3 tree node structure

@@ -7,7 +7,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
-import { SvgSettingsService } from '../../services/svg-settings.service';
+import { MatSelectModule } from '@angular/material/select';
+import {
+  SvgSettingsService,
+  TreeDirection,
+} from '../../services/svg-settings.service';
 
 @Component({
   selector: 'app-tree-editor',
@@ -20,6 +24,7 @@ import { SvgSettingsService } from '../../services/svg-settings.service';
     MatIconModule,
     MatCheckboxModule,
     MatTabsModule,
+    MatSelectModule,
   ],
   templateUrl: './tree-editor.html',
   styleUrl: './tree-editor.css',
@@ -54,6 +59,17 @@ export class TreeEditor {
   get rootBranchLength() {
     return this.svgSettingsService.rootBranchLength;
   }
+
+  get treeDirection() {
+    return this.svgSettingsService.treeDirection;
+  }
+
+  readonly treeDirectionOptions: { value: TreeDirection; label: string }[] = [
+    { value: 'left-to-right', label: 'Left to Right' },
+    { value: 'right-to-left', label: 'Right to Left' },
+    { value: 'top-to-bottom', label: 'Top to Bottom' },
+    { value: 'bottom-to-top', label: 'Bottom to Top' },
+  ];
 
   resetToDefaults(): void {
     this.svgSettingsService.reset();

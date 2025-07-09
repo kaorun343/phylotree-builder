@@ -58,22 +58,43 @@ export class TreeViewer {
   // Root branch information (always shown with pixel-based length)
   protected rootBranch = computed(() => {
     const rootBranchLength = this.svgSettingsService.rootBranchLength();
+    const direction = this.svgSettingsService.treeDirection();
     const nodes = this.visualNodes();
 
     const tree = this.tree();
     const rootNode = nodes.find((node) => node.id === tree.rootId);
     if (!rootNode) return null;
 
-    // Root branch extends to the left by the specified pixel length
+    // Root branch extends in the opposite direction of tree growth
+    const rootPosition = rootNode.position;
+    let start: { x: number; y: number };
+    let end: { x: number; y: number };
+
+    switch (direction) {
+      case 'left-to-right':
+        start = { x: rootPosition.x - rootBranchLength, y: rootPosition.y };
+        end = { x: rootPosition.x, y: rootPosition.y };
+        break;
+      case 'right-to-left':
+        start = { x: rootPosition.x + rootBranchLength, y: rootPosition.y };
+        end = { x: rootPosition.x, y: rootPosition.y };
+        break;
+      case 'top-to-bottom':
+        start = { x: rootPosition.x, y: rootPosition.y - rootBranchLength };
+        end = { x: rootPosition.x, y: rootPosition.y };
+        break;
+      case 'bottom-to-top':
+        start = { x: rootPosition.x, y: rootPosition.y + rootBranchLength };
+        end = { x: rootPosition.x, y: rootPosition.y };
+        break;
+      default:
+        start = { x: rootPosition.x - rootBranchLength, y: rootPosition.y };
+        end = { x: rootPosition.x, y: rootPosition.y };
+    }
+
     return {
-      start: {
-        x: rootNode.position.x - rootBranchLength,
-        y: rootNode.position.y,
-      },
-      end: {
-        x: rootNode.position.x,
-        y: rootNode.position.y,
-      },
+      start,
+      end,
       length: rootBranchLength,
     };
   });

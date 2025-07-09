@@ -120,6 +120,30 @@
       <mat-tab label="Layout">
         <div class="tab-content">
           <div class="settings-form">
+            <!-- Tree Direction Section -->
+            <div class="settings-section">
+              <h4>Tree Direction</h4>
+
+              <!-- Tree Direction Select -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Direction</mat-label>
+                <mat-select
+                  [(ngModel)]="treeDirection"
+                  [value]="treeDirection()"
+                >
+                  @for (option of treeDirectionOptions; track option.value) {
+                  <mat-option [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                  }
+                </mat-select>
+                <mat-icon matSuffix>explore</mat-icon>
+                <mat-hint>Choose tree growth direction</mat-hint>
+              </mat-form-field>
+            </div>
+
+            <hr class="section-divider" />
+
             <!-- Root Branch Section -->
             <div class="settings-section">
               <h4>Root Branch</h4>
