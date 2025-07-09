@@ -239,4 +239,38 @@ export class TreeViewer {
     // If child is above parent (parentY > childY), label goes to bottom
     return parentY < childY ? 'text-after-edge' : 'text-before-edge';
   }
+
+  // Node label positioning based on tree direction
+  protected getNodeLabelPosition(node: VisualNode): { x: number; y: number } {
+    const direction = this.svgSettingsService.treeDirection();
+    
+    switch (direction) {
+      case 'left-to-right':
+        return { x: node.position.x + 10, y: node.position.y + 5 };
+      case 'right-to-left':
+        return { x: node.position.x - 10, y: node.position.y + 5 };
+      case 'top-to-bottom':
+        return { x: node.position.x, y: node.position.y + 15 };
+      case 'bottom-to-top':
+        return { x: node.position.x, y: node.position.y - 10 };
+      default:
+        return { x: node.position.x + 10, y: node.position.y + 5 };
+    }
+  }
+
+  protected getNodeLabelTextAnchor(): string {
+    const direction = this.svgSettingsService.treeDirection();
+    
+    switch (direction) {
+      case 'left-to-right':
+        return 'start';
+      case 'right-to-left':
+        return 'end';
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        return 'middle';
+      default:
+        return 'start';
+    }
+  }
 }

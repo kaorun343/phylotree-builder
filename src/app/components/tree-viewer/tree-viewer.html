@@ -62,8 +62,9 @@
 
       <!-- Node label -->
       <text
-        [attr.x]="node.position.x + 10"
-        [attr.y]="node.position.y + 5"
+        [attr.x]="getNodeLabelPosition(node).x"
+        [attr.y]="getNodeLabelPosition(node).y"
+        [attr.text-anchor]="getNodeLabelTextAnchor()"
         class="node-label"
         [class.selected-label]="
           currentMode() === 'author' && isNodeSelected()(node.id)
