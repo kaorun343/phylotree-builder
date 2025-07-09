@@ -28,11 +28,72 @@ export class SvgSettingsService {
 
   // Computed values for layout dimensions
   readonly layoutWidth = computed(
-    () => this.width() - this.marginRoot() - this.marginLeaf()
+    () => this.width() - this.marginLeft() - this.marginRight()
   );
   readonly layoutHeight = computed(
-    () => this.height() - this.marginPerpendicular() * 2
+    () => this.height() - this.marginTop() - this.marginBottom()
   );
+
+  // Physical margin computed values based on tree direction
+  readonly marginTop = computed(() => {
+    const direction = this.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return this.marginPerpendicular();
+      case 'top-to-bottom':
+        return this.marginRoot();
+      case 'bottom-to-top':
+        return this.marginLeaf();
+      default:
+        return this.marginPerpendicular();
+    }
+  });
+
+  readonly marginBottom = computed(() => {
+    const direction = this.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return this.marginPerpendicular();
+      case 'top-to-bottom':
+        return this.marginLeaf();
+      case 'bottom-to-top':
+        return this.marginRoot();
+      default:
+        return this.marginPerpendicular();
+    }
+  });
+
+  readonly marginLeft = computed(() => {
+    const direction = this.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+        return this.marginRoot();
+      case 'right-to-left':
+        return this.marginLeaf();
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        return this.marginPerpendicular();
+      default:
+        return this.marginRoot();
+    }
+  });
+
+  readonly marginRight = computed(() => {
+    const direction = this.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+        return this.marginLeaf();
+      case 'right-to-left':
+        return this.marginRoot();
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        return this.marginPerpendicular();
+      default:
+        return this.marginLeaf();
+    }
+  });
 
   reset(): void {
     this.width.set(DEFAULT_WIDTH);

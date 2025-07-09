@@ -34,14 +34,11 @@ export class TreeViewer {
   // Get visual nodes directly from the service's computed property
   protected visualNodes = computed(() => this.treeViewerService.visualNodes());
 
-  protected marginLeft = computed(() => {
-    return this.svgSettingsService.marginRoot();
-  });
-
   // SVG transform for margin positioning
   protected marginTransform = computed(() => {
-    const marginTop = this.svgSettingsService.marginPerpendicular();
-    return `translate(${this.marginLeft()},${marginTop})`;
+    const marginLeft = this.svgSettingsService.marginLeft();
+    const marginTop = this.svgSettingsService.marginTop();
+    return `translate(${marginLeft},${marginTop})`;
   });
 
   // Flat list of visible branches for easier template iteration
