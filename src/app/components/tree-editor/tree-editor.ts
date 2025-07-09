@@ -44,16 +44,16 @@ export class TreeEditor {
     return this.svgSettingsService.marginTop;
   }
 
-  get marginRight() {
-    return this.svgSettingsService.marginRight;
+  get marginLeaf() {
+    return this.svgSettingsService.marginLeaf;
   }
 
   get marginBottom() {
     return this.svgSettingsService.marginBottom;
   }
 
-  get marginLeft() {
-    return this.svgSettingsService.marginLeft;
+  get marginRoot() {
+    return this.svgSettingsService.marginRoot;
   }
 
   get rootBranchLength() {

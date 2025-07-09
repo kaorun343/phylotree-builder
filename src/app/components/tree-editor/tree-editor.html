@@ -51,12 +51,12 @@
               <div class="two-column-fields">
                 <!-- Top Margin -->
                 <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Top Margin</mat-label>
+                  <mat-label>Top Margin (Top Side)</mat-label>
                   <input
                     matInput
                     type="number"
                     [(ngModel)]="marginTop"
-                    placeholder="Enter top margin"
+                    placeholder="Enter top margin (top side)"
                   />
                   <mat-icon matSuffix>keyboard_arrow_up</mat-icon>
                   <mat-hint>Top margin in pixels</mat-hint>
@@ -64,12 +64,12 @@
 
                 <!-- Right Margin -->
                 <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Right Margin</mat-label>
+                  <mat-label>Leaf Side Margin (Right Side)</mat-label>
                   <input
                     matInput
                     type="number"
-                    [(ngModel)]="marginRight"
-                    placeholder="Enter right margin"
+                    [(ngModel)]="marginLeaf"
+                    placeholder="Enter leaf side margin (right side)"
                   />
                   <mat-icon matSuffix>keyboard_arrow_right</mat-icon>
                   <mat-hint>Right margin in pixels</mat-hint>
@@ -79,25 +79,25 @@
               <div class="two-column-fields">
                 <!-- Bottom Margin -->
                 <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Bottom Margin</mat-label>
+                  <mat-label>Bottom Margin (Bottom Side)</mat-label>
                   <input
                     matInput
                     type="number"
                     [(ngModel)]="marginBottom"
-                    placeholder="Enter bottom margin"
+                    placeholder="Enter bottom margin (bottom side)"
                   />
                   <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
                   <mat-hint>Bottom margin in pixels</mat-hint>
                 </mat-form-field>
 
-                <!-- Left Margin -->
+                <!-- Root Side Margin -->
                 <mat-form-field appearance="outline" class="half-width">
-                  <mat-label>Left Margin</mat-label>
+                  <mat-label>Root Side Margin (Left Side)</mat-label>
                   <input
                     matInput
                     type="number"
-                    [(ngModel)]="marginLeft"
-                    placeholder="Enter left margin"
+                    [(ngModel)]="marginRoot"
+                    placeholder="Enter root side margin (left side)"
                   />
                   <mat-icon matSuffix>keyboard_arrow_left</mat-icon>
                   <mat-hint>Left margin in pixels</mat-hint>
