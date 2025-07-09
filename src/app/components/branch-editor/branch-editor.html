@@ -1,8 +1,9 @@
 <div class="branch-editor">
   <div class="branch-settings-panel">
-    <app-author-panel-header 
-      title="Branch Settings" 
-      description="Configure the selected branch properties">
+    <app-author-panel-header
+      title="Branch Settings"
+      description="Configure the selected branch properties"
+    >
     </app-author-panel-header>
 
     <div class="settings-form">
@@ -106,6 +107,26 @@
             <mat-icon>call_split</mat-icon>
             Split Branch
           </button>
+
+          <div class="move-buttons-row">
+            <button
+              mat-raised-button
+              [disabled]="!canMoveUp()"
+              (click)="onMoveBranchUp()"
+            >
+              <mat-icon>{{ moveUpIcon() }}</mat-icon>
+              {{ moveUpLabel() }}
+            </button>
+
+            <button
+              mat-raised-button
+              [disabled]="!canMoveDown()"
+              (click)="onMoveBranchDown()"
+            >
+              <mat-icon>{{ moveDownIcon() }}</mat-icon>
+              {{ moveDownLabel() }}
+            </button>
+          </div>
 
           <button mat-raised-button (click)="onResetBranchLength()">
             <mat-icon>refresh</mat-icon>

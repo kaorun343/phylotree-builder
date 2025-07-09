@@ -76,6 +76,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .action-buttons button {
@@ -83,6 +84,19 @@
   align-items: center;
   gap: 0.5rem;
   justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.move-buttons-row {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.move-buttons-row button {
+  flex: 1;
+  width: auto;
 }
 
 .no-selection {

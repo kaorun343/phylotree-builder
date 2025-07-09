@@ -378,4 +378,84 @@ export class TreeService {
       rootId: 'root',
     };
   }
+
+  /**
+   * Move a branch up among its siblings (decreases index in parent's children array)
+   */
+  moveBranchUp(nodeId: string): void {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node || !node.parent) return;
+
+    const parentNode = currentTree.nodes.get(node.parent);
+    if (!parentNode) return;
+
+    const currentIndex = parentNode.children.indexOf(nodeId);
+    if (currentIndex <= 0) return; // Already at top or not found
+
+    // Swap with previous sibling
+    [parentNode.children[currentIndex - 1], parentNode.children[currentIndex]] = 
+    [parentNode.children[currentIndex], parentNode.children[currentIndex - 1]];
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
+  /**
+   * Move a branch down among its siblings (increases index in parent's children array)
+   */
+  moveBranchDown(nodeId: string): void {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node || !node.parent) return;
+
+    const parentNode = currentTree.nodes.get(node.parent);
+    if (!parentNode) return;
+
+    const currentIndex = parentNode.children.indexOf(nodeId);
+    if (currentIndex < 0 || currentIndex >= parentNode.children.length - 1) return; // Already at bottom or not found
+
+    // Swap with next sibling
+    [parentNode.children[currentIndex], parentNode.children[currentIndex + 1]] = 
+    [parentNode.children[currentIndex + 1], parentNode.children[currentIndex]];
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
+  /**
+   * Check if a branch can move up (has a previous sibling)
+   */
+  canMoveBranchUp(nodeId: string): boolean {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node || !node.parent) return false;
+
+    const parentNode = currentTree.nodes.get(node.parent);
+    if (!parentNode) return false;
+
+    const currentIndex = parentNode.children.indexOf(nodeId);
+    return currentIndex > 0;
+  }
+
+  /**
+   * Check if a branch can move down (has a next sibling)
+   */
+  canMoveBranchDown(nodeId: string): boolean {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node || !node.parent) return false;
+
+    const parentNode = currentTree.nodes.get(node.parent);
+    if (!parentNode) return false;
+
+    const currentIndex = parentNode.children.indexOf(nodeId);
+    return currentIndex >= 0 && currentIndex < parentNode.children.length - 1;
+  }
 }

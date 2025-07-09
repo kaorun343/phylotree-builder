@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { TreeService } from '../../services/tree.service';
 import { TreeViewerService } from '../../services/tree-viewer.service';
+import { SvgSettingsService } from '../../services/svg-settings.service';
 import { AuthorPanelHeader } from '../author-panel-header/author-panel-header';
 
 @Component({
@@ -28,6 +29,7 @@ import { AuthorPanelHeader } from '../author-panel-header/author-panel-header';
 export class BranchEditor {
   private treeService = inject(TreeService);
   private treeViewerService = inject(TreeViewerService);
+  private svgSettingsService = inject(SvgSettingsService);
 
   // Input prop for the selected branch ID
   selectedBranchId = input.required<string>();
@@ -70,6 +72,77 @@ export class BranchEditor {
   protected childNodeName = computed(() => {
     const branch = this.selectedBranchData();
     return branch.child.name || 'Unknown';
+  });
+
+  // Branch movement computed properties
+  protected canMoveUp = computed(() => {
+    const branch = this.selectedBranchData();
+    return this.treeService.canMoveBranchUp(branch.child.id);
+  });
+
+  protected canMoveDown = computed(() => {
+    const branch = this.selectedBranchData();
+    return this.treeService.canMoveBranchDown(branch.child.id);
+  });
+
+  protected moveUpLabel = computed(() => {
+    const direction = this.svgSettingsService.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return 'Move Up';
+      case 'top-to-bottom':
+        return 'Move Left';
+      case 'bottom-to-top':
+        return 'Move Left';
+      default:
+        return 'Move Up';
+    }
+  });
+
+  protected moveDownLabel = computed(() => {
+    const direction = this.svgSettingsService.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return 'Move Down';
+      case 'top-to-bottom':
+        return 'Move Right';
+      case 'bottom-to-top':
+        return 'Move Right';
+      default:
+        return 'Move Down';
+    }
+  });
+
+  protected moveUpIcon = computed(() => {
+    const direction = this.svgSettingsService.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return 'keyboard_arrow_up';
+      case 'top-to-bottom':
+        return 'keyboard_arrow_left';
+      case 'bottom-to-top':
+        return 'keyboard_arrow_left';
+      default:
+        return 'keyboard_arrow_up';
+    }
+  });
+
+  protected moveDownIcon = computed(() => {
+    const direction = this.svgSettingsService.treeDirection();
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return 'keyboard_arrow_down';
+      case 'top-to-bottom':
+        return 'keyboard_arrow_right';
+      case 'bottom-to-top':
+        return 'keyboard_arrow_right';
+      default:
+        return 'keyboard_arrow_down';
+    }
   });
 
   // Form getters and setters for two-way binding
@@ -127,5 +200,15 @@ export class BranchEditor {
   protected onResetBranchWidth(): void {
     const branch = this.selectedBranchData();
     this.treeService.updateNodeBranchWidth(branch.child.id, undefined);
+  }
+
+  protected onMoveBranchUp(): void {
+    const branch = this.selectedBranchData();
+    this.treeService.moveBranchUp(branch.child.id);
+  }
+
+  protected onMoveBranchDown(): void {
+    const branch = this.selectedBranchData();
+    this.treeService.moveBranchDown(branch.child.id);
   }
 }
