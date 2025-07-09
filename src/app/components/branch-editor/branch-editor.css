@@ -15,23 +15,6 @@
   min-height: min-content;
 }
 
-.panel-header {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.panel-header h3 {
-  margin: 0;
-  color: #333;
-  font-size: 1.25rem;
-}
-
-.panel-header p {
-  margin: 0.5rem 0 0 0;
-  color: #666;
-  font-size: 0.875rem;
-}
-
 .settings-form {
   display: flex;
   flex-direction: column;

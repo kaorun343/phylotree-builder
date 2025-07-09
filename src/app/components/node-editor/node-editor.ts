@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { TreeService } from '../../services/tree.service';
 import { TreeViewerService } from '../../services/tree-viewer.service';
+import { AuthorPanelHeader } from '../author-panel-header/author-panel-header';
 
 @Component({
   selector: 'app-node-editor',
@@ -19,6 +20,7 @@ import { TreeViewerService } from '../../services/tree-viewer.service';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    AuthorPanelHeader,
   ],
   templateUrl: './node-editor.html',
   styleUrl: './node-editor.css',
@@ -34,7 +36,7 @@ export class NodeEditor {
   protected selectedNodeData = computed(() => {
     const selectedNodeId = this.selectedNodeId();
     const nodes = this.treeViewerService.visualNodes();
-    const node = nodes.find(n => n.id === selectedNodeId);
+    const node = nodes.find((n) => n.id === selectedNodeId);
     if (!node) {
       throw new Error(`Node with ID ${selectedNodeId} not found`);
     }

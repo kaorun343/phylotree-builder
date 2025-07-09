@@ -13,30 +13,6 @@
   flex-direction: column;
 }
 
-.panel-header {
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.panel-header mat-icon {
-  color: #666;
-  margin-bottom: 8px;
-}
-
-.panel-header h3 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: #333;
-}
-
-.panel-header p {
-  margin: 0;
-  font-size: 14px;
-  color: #666;
-}
-
 .settings-form {
   flex: 1;
   display: flex;

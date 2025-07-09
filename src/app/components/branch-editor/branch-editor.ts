@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { TreeService } from '../../services/tree.service';
 import { TreeViewerService } from '../../services/tree-viewer.service';
+import { AuthorPanelHeader } from '../author-panel-header/author-panel-header';
 
 @Component({
   selector: 'app-branch-editor',
@@ -19,6 +20,7 @@ import { TreeViewerService } from '../../services/tree-viewer.service';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    AuthorPanelHeader,
   ],
   templateUrl: './branch-editor.html',
   styleUrl: './branch-editor.css',

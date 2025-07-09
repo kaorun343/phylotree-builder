@@ -12,6 +12,7 @@ import {
   SvgSettingsService,
   TreeDirection,
 } from '../../services/svg-settings.service';
+import { AuthorPanelHeader } from '../author-panel-header/author-panel-header';
 
 @Component({
   selector: 'app-tree-editor',
@@ -25,6 +26,7 @@ import {
     MatCheckboxModule,
     MatTabsModule,
     MatSelectModule,
+    AuthorPanelHeader,
   ],
   templateUrl: './tree-editor.html',
   styleUrl: './tree-editor.css',
