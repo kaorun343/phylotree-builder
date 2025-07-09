@@ -323,4 +323,18 @@ export class TreeViewer {
         return 'start';
     }
   }
+
+  // Branch width methods
+  protected getBranchWidth(branch: {
+    parent: VisualNode;
+    child: VisualNode;
+    id: string;
+  }): number {
+    // Use individual branch width if set, otherwise use global default
+    return branch.child.branchWidth ?? this.svgSettingsService.branchWidth();
+  }
+
+  protected getRootBranchWidth(): number {
+    return this.svgSettingsService.branchWidth();
+  }
 }

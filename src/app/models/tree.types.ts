@@ -9,6 +9,7 @@ export interface TreeNode {
   parent?: string;
   children: string[];
   color?: string;
+  branchWidth?: number;
 }
 
 export interface PhylogeneticTree {

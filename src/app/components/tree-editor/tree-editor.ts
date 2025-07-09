@@ -56,6 +56,10 @@ export class TreeEditor {
     return this.svgSettingsService.rootBranchLength;
   }
 
+  get branchWidth() {
+    return this.svgSettingsService.branchWidth;
+  }
+
   get treeDirection() {
     return this.svgSettingsService.treeDirection;
   }

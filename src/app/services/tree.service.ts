@@ -139,6 +139,20 @@ export class TreeService {
     });
   }
 
+  updateNodeBranchWidth(nodeId: string, branchWidth: number | undefined): void {
+    const currentTree = this.currentTree();
+    const node = currentTree.nodes.get(nodeId);
+    if (!node) return;
+
+    node.branchWidth = branchWidth;
+
+    // Update the tree
+    this.currentTree.set({
+      ...currentTree,
+      nodes: new Map(currentTree.nodes),
+    });
+  }
+
   updateNodeName(nodeId: string, name: string): void {
     const currentTree = this.currentTree();
     const node = currentTree.nodes.get(nodeId);

@@ -149,6 +149,29 @@
 
             <hr class="section-divider" />
 
+            <!-- Branch Appearance Section -->
+            <div class="settings-section">
+              <h4>Branch Appearance</h4>
+
+              <!-- Global Branch Width -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Default Branch Width</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="branchWidth"
+                  placeholder="Enter default branch width"
+                  step="0.5"
+                  min="0.5"
+                  max="10"
+                />
+                <mat-icon matSuffix>line_weight</mat-icon>
+                <mat-hint>Default width for all branches in pixels</mat-hint>
+              </mat-form-field>
+            </div>
+
+            <hr class="section-divider" />
+
             <div class="panel-actions">
               <button mat-button (click)="resetToDefaults()">
                 <mat-icon>refresh</mat-icon>

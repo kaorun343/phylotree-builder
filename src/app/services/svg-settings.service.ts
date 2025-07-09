@@ -12,6 +12,7 @@ const DEFAULT_MARGIN_PERPENDICULAR = 20;
 const DEFAULT_MARGIN_LEAF = 100;
 const DEFAULT_MARGIN_ROOT = 40;
 const DEFAULT_ROOT_BRANCH_LENGTH = 20;
+const DEFAULT_BRANCH_WIDTH = 2;
 const DEFAULT_TREE_DIRECTION = 'left-to-right';
 
 @Injectable({
@@ -24,6 +25,7 @@ export class SvgSettingsService {
   readonly marginLeaf = signal<number>(DEFAULT_MARGIN_LEAF);
   readonly marginRoot = signal<number>(DEFAULT_MARGIN_ROOT);
   readonly rootBranchLength = signal<number>(DEFAULT_ROOT_BRANCH_LENGTH);
+  readonly branchWidth = signal<number>(DEFAULT_BRANCH_WIDTH);
   readonly treeDirection = signal<TreeDirection>(DEFAULT_TREE_DIRECTION);
 
   // Computed values for layout dimensions
@@ -102,6 +104,7 @@ export class SvgSettingsService {
     this.marginLeaf.set(DEFAULT_MARGIN_LEAF);
     this.marginRoot.set(DEFAULT_MARGIN_ROOT);
     this.rootBranchLength.set(DEFAULT_ROOT_BRANCH_LENGTH);
+    this.branchWidth.set(DEFAULT_BRANCH_WIDTH);
     this.treeDirection.set(DEFAULT_TREE_DIRECTION);
   }
 }

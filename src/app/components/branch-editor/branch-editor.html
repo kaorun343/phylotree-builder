@@ -65,6 +65,22 @@
           <mat-hint>Visual color for this branch</mat-hint>
         </mat-form-field>
 
+        <!-- Branch Width -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Branch Width</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="branchWidthValue"
+            placeholder="Enter branch width (leave empty for default)"
+            step="0.5"
+            min="0.5"
+            max="10"
+          />
+          <mat-icon matSuffix>line_weight</mat-icon>
+          <mat-hint>Width in pixels (empty = use default)</mat-hint>
+        </mat-form-field>
+
         <!-- Branch Label (placeholder for future) -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Branch Label</mat-label>
@@ -99,6 +115,11 @@
           <button mat-raised-button (click)="onResetBranchColor()">
             <mat-icon>color_lens</mat-icon>
             Reset Color
+          </button>
+
+          <button mat-raised-button (click)="onResetBranchWidth()">
+            <mat-icon>line_weight</mat-icon>
+            Reset Width
           </button>
 
           <button mat-raised-button color="warn" (click)="onRemoveBranch()">

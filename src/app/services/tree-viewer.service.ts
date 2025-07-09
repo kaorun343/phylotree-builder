@@ -9,6 +9,7 @@ export interface D3TreeNode {
   name?: string;
   branchLength?: number;
   color?: string;
+  branchWidth?: number;
   children?: D3TreeNode[];
 }
 
@@ -91,6 +92,7 @@ export class TreeViewerService {
         name: d3Node.data.name,
         branchLength: d3Node.data.branchLength,
         color: d3Node.data.color,
+        branchWidth: d3Node.data.branchWidth,
         children: d3Node.children?.map((child) => child.data.id) || [],
         parent: d3Node.parent?.data.id,
         position: this.calculateNodePosition(direction, normalizedDistance, pos.y),
@@ -170,6 +172,7 @@ export class TreeViewerService {
       name: node.name,
       branchLength: node.branchLength,
       color: node.color,
+      branchWidth: node.branchWidth,
     };
 
     // Add children if they exist

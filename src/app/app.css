@@ -25,7 +25,9 @@ app-header {
 .editor-pane {
   grid-area: editor-pane;
   background-color: #f9f9f9;
-  overflow: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 app-footer {

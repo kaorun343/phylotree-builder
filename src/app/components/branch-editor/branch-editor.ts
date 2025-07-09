@@ -34,7 +34,7 @@ export class BranchEditor {
   protected selectedBranchData = computed(() => {
     const selectedBranchId = this.selectedBranchId();
     const nodes = this.treeViewerService.visualNodes();
-    const nodeMap = new Map(nodes.map(node => [node.id, node]));
+    const nodeMap = new Map(nodes.map((node) => [node.id, node]));
 
     // Parse the branch ID to get parent and child IDs
     const [parentId, childId] = selectedBranchId.split('-');
@@ -53,6 +53,11 @@ export class BranchEditor {
   protected branchColor = computed(() => {
     const branch = this.selectedBranchData();
     return branch.child.color || '#666666';
+  });
+
+  protected branchWidth = computed(() => {
+    const branch = this.selectedBranchData();
+    return branch.child.branchWidth || null;
   });
 
   protected parentNodeName = computed(() => {
@@ -86,6 +91,16 @@ export class BranchEditor {
     this.treeService.updateNodeColor(branch.child.id, value);
   }
 
+  get branchWidthValue() {
+    return this.branchWidth();
+  }
+
+  set branchWidthValue(value: number | null) {
+    const branch = this.selectedBranchData();
+    // Update the branch width through the tree service
+    this.treeService.updateNodeBranchWidth(branch.child.id, value || undefined);
+  }
+
   protected onSplitBranch(): void {
     const branch = this.selectedBranchData();
     // Add a new internal node between parent and child
@@ -105,5 +120,10 @@ export class BranchEditor {
   protected onResetBranchColor(): void {
     const branch = this.selectedBranchData();
     this.treeService.updateNodeColor(branch.child.id, undefined);
+  }
+
+  protected onResetBranchWidth(): void {
+    const branch = this.selectedBranchData();
+    this.treeService.updateNodeBranchWidth(branch.child.id, undefined);
   }
 }

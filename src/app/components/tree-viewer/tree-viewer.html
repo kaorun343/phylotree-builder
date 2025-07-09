@@ -16,7 +16,7 @@
         [attr.y2]="rootBranch()!.end.y"
         class="branch root-branch"
         stroke="#666"
-        stroke-width="2"
+        [attr.stroke-width]="getRootBranchWidth()"
         fill="none"
       ></line>
       } @for (branch of visibleBranches(); track branch.id) {
@@ -24,7 +24,7 @@
         [attr.d]="branch | branchPath"
         class="branch"
         [attr.stroke]="branch.child.color || '#666'"
-        stroke-width="2"
+        [attr.stroke-width]="getBranchWidth(branch)"
         fill="none"
         [style.cursor]="currentMode() === 'author' ? 'pointer' : 'default'"
         (click)="onEdgeClick(branch.child, $event)"
