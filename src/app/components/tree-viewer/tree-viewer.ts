@@ -214,8 +214,20 @@ export class TreeViewer {
     child: VisualNode;
     id: string;
   }): number {
-    // Position at the center of the horizontal line
-    return (branch.parent.position.x + branch.child.position.x) / 2;
+    const direction = this.svgSettingsService.treeDirection();
+    
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        // Position at the center of the horizontal line
+        return (branch.parent.position.x + branch.child.position.x) / 2;
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        // Position offset from the vertical line to avoid overlapping
+        return branch.child.position.x + 8;
+      default:
+        return (branch.parent.position.x + branch.child.position.x) / 2;
+    }
   }
 
   protected getBranchLabelY(branch: {
@@ -223,8 +235,20 @@ export class TreeViewer {
     child: VisualNode;
     id: string;
   }): number {
-    // Position at the horizontal line (child's Y coordinate)
-    return branch.child.position.y;
+    const direction = this.svgSettingsService.treeDirection();
+    
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        // Position at the horizontal line (child's Y coordinate)
+        return branch.child.position.y;
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        // Position at the center of the vertical line
+        return (branch.parent.position.y + branch.child.position.y) / 2;
+      default:
+        return branch.child.position.y;
+    }
   }
 
   protected getBranchLabelBaseline(branch: {
@@ -232,12 +256,38 @@ export class TreeViewer {
     child: VisualNode;
     id: string;
   }): string {
-    const parentY = branch.parent.position.y;
-    const childY = branch.child.position.y;
+    const direction = this.svgSettingsService.treeDirection();
+    
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        const parentY = branch.parent.position.y;
+        const childY = branch.child.position.y;
+        // If child is below parent (parentY < childY), label goes to top
+        // If child is above parent (parentY > childY), label goes to bottom
+        return parentY < childY ? 'text-after-edge' : 'text-before-edge';
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        // For vertical directions, use middle baseline
+        return 'middle';
+      default:
+        return 'text-after-edge';
+    }
+  }
 
-    // If child is below parent (parentY < childY), label goes to top
-    // If child is above parent (parentY > childY), label goes to bottom
-    return parentY < childY ? 'text-after-edge' : 'text-before-edge';
+  protected getBranchLabelTextAnchor(): string {
+    const direction = this.svgSettingsService.treeDirection();
+    
+    switch (direction) {
+      case 'left-to-right':
+      case 'right-to-left':
+        return 'middle';
+      case 'top-to-bottom':
+      case 'bottom-to-top':
+        return 'start';
+      default:
+        return 'middle';
+    }
   }
 
   // Node label positioning based on tree direction
