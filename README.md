@@ -1,59 +1,95 @@
-# PhylotreeBuilder
+# PhyloTree Builder
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+An interactive web application designed primarily for creating educational phylogenetic tree figures and teaching the concepts of phylogenetic relationships.
 
-## Development server
+## 📚 Purpose
 
-To start a local development server, run:
+PhyloTree Builder is specifically designed for **educational purposes** to help teach phylogenetic concepts and create illustrative tree diagrams. Perfect for:
+
+- **Instructors** creating teaching materials
+- **Students** learning about evolutionary relationships
+- **Anyone** who needs to illustrate phylogenetic tree structures and concepts rather than present actual research data
+
+While the tool can handle real data, its strength lies in making it easy to create clear, customizable tree figures for educational content, presentations, and conceptual explanations.
+
+## ✨ Key Features
+
+- **Interactive Editing:** Click to select nodes and branches for real-time editing
+- **Visual Customization:** Adjust branch lengths, colors, and widths
+- **Tree Operations:** Add/remove nodes, move branches, and auto-collapse structures
+- **Multiple Layouts:** Support for 4-directional tree orientations
+- **Dual Modes:** Author mode for editing and Presentation mode for clean display
+- **Export Options:** Save trees as SVG or PNG images
+
+## 🚀 Getting Started
+
+1. Switch to **Author mode** to begin editing
+2. Click on nodes or branches to select and edit them
+3. Use Ctrl+Click on branches to add new leaf nodes
+4. Adjust tree direction and visual settings as needed
+5. Switch to **Presentation mode** for clean viewing
+
+## 🛠️ Built With
+
+- Angular 20 with standalone components
+- Angular Material UI
+- D3.js for tree layout algorithms
+- TypeScript with strict mode
+- Zoneless change detection for optimal performance
+
+## 💻 Development
+
+### Prerequisites
+
+- Node.js (Latest LTS version)
+- Yarn package manager
+
+### Development Server
+
+To start a local development server:
 
 ```bash
+yarn start
+# or
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navigate to `http://localhost:4200/`. The application will automatically reload when you modify source files.
 
-## Code scaffolding
+### Building
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+To build the project:
 
 ```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
+yarn build
+# or
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+### Testing
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+To execute unit tests:
 
 ```bash
+yarn test
+# or
 ng test
 ```
 
-## Running end-to-end tests
+## 📄 License
 
-For end-to-end (e2e) testing, run:
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-```bash
-ng e2e
-```
+The MIT License allows you to use, modify, and distribute this software freely, making it perfect for educational institutions and open science initiatives.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🤝 Contributing
 
-## Additional Resources
+Contributions are welcome! This tool is designed to support phylogenetic education, so improvements that enhance its educational value are especially appreciated.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📚 Additional Resources
+
+- [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli)
+- [D3.js Documentation](https://d3js.org/)
+- [Angular Material Components](https://material.angular.io/)
