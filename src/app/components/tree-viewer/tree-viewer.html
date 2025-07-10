@@ -36,11 +36,11 @@
     <g class="nodes" [attr.transform]="marginTransform()">
       @for (node of visualNodes(); track node.id) {
       <!-- Selection indicator (behind node) - Only in Author mode -->
-      @if (currentMode() === 'author' && isNodeSelected()(node.id)) {
+      @if (currentMode() === 'author' && isNodeSelected(node.id)) {
       <circle
         [attr.cx]="node.position.x"
         [attr.cy]="node.position.y"
-        [attr.r]="getNodeRadius()(node) + 3"
+        [attr.r]="getNodeRadius(node) + 3"
         class="selection-ring"
       ></circle>
       }
@@ -50,12 +50,12 @@
       <circle
         [attr.cx]="node.position.x"
         [attr.cy]="node.position.y"
-        [attr.r]="getNodeRadius()(node)"
-        [attr.class]="getNodeClasses()(node)"
-        [attr.fill]="getNodeStyles()(node)['fill']"
-        [attr.stroke]="getNodeStyles()(node)['stroke']"
-        [attr.stroke-width]="getNodeStyles()(node)['stroke-width']"
-        [style.cursor]="getNodeStyles()(node)['cursor']"
+        [attr.r]="getNodeRadius(node)"
+        [attr.class]="getNodeClasses(node)"
+        [attr.fill]="getNodeStyles(node)['fill']"
+        [attr.stroke]="getNodeStyles(node)['stroke']"
+        [attr.stroke-width]="getNodeStyles(node)['stroke-width']"
+        [style.cursor]="getNodeStyles(node)['cursor']"
         (click)="onNodeClick(node, $event)"
       ></circle>
       }
@@ -67,17 +67,17 @@
         [attr.text-anchor]="getNodeLabelTextAnchor()"
         class="node-label"
         [class.selected-label]="
-          currentMode() === 'author' && isNodeSelected()(node.id)
+          currentMode() === 'author' && isNodeSelected(node.id)
         "
         font-family="monospace"
         font-size="12"
         [attr.fill]="
-          currentMode() === 'author' && isNodeSelected()(node.id)
+          currentMode() === 'author' && isNodeSelected(node.id)
             ? '#ff9800'
             : '#333'
         "
         [attr.font-weight]="
-          currentMode() === 'author' && isNodeSelected()(node.id)
+          currentMode() === 'author' && isNodeSelected(node.id)
             ? 'bold'
             : 'normal'
         "

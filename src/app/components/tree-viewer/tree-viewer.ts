@@ -99,53 +99,73 @@ export class TreeViewer {
     };
   });
 
-  protected isNodeSelected = computed(() => {
+  // Optimized computed properties that return Maps instead of functions
+  protected nodeSelectionMap = computed(() => {
     const selectedId = this.treeService.selectedNodeId();
-    return (nodeId: string): boolean => {
-      return selectedId === nodeId;
-    };
+    const nodes = this.visualNodes();
+    return new Map(nodes.map(node => [node.id, selectedId === node.id]));
   });
 
-  protected getNodeRadius = computed(() => {
-    const isSelected = this.isNodeSelected();
-
-    return (node: VisualNode): number => {
+  protected nodeRadiusMap = computed(() => {
+    const nodes = this.visualNodes();
+    const selectionMap = this.nodeSelectionMap();
+    
+    return new Map(nodes.map(node => {
       const baseRadius = node.children.length === 0 ? 6 : 4;
-      const selectedScale = isSelected(node.id) ? 1.3 : 1;
-      return baseRadius * selectedScale;
-    };
+      const selectedScale = selectionMap.get(node.id) ? 1.3 : 1;
+      return [node.id, baseRadius * selectedScale];
+    }));
   });
 
-  protected getNodeClasses = computed(() => {
-    const isSelected = this.isNodeSelected();
-
-    return (node: VisualNode): string => {
+  protected nodeClassesMap = computed(() => {
+    const nodes = this.visualNodes();
+    const selectionMap = this.nodeSelectionMap();
+    
+    return new Map(nodes.map(node => {
       const classes = ['node'];
       if (node.children.length === 0) classes.push('leaf-node');
       else classes.push('internal-node');
-      if (isSelected(node.id)) classes.push('selected');
-      return classes.join(' ');
-    };
+      if (selectionMap.get(node.id)) classes.push('selected');
+      return [node.id, classes.join(' ')];
+    }));
   });
 
-  protected getNodeStyles = computed(() => {
-    const isSelected = this.isNodeSelected();
+  protected nodeStylesMap = computed(() => {
+    const nodes = this.visualNodes();
+    const selectionMap = this.nodeSelectionMap();
     const currentMode = this.currentMode();
-
-    return (node: VisualNode): Record<string, string> => {
+    
+    return new Map(nodes.map(node => {
       const isLeaf = node.children.length === 0;
-      const selected = isSelected(node.id);
+      const selected = selectionMap.get(node.id) || false;
 
-      const baseStyles = {
+      const styles = {
         cursor: currentMode === 'author' ? 'pointer' : 'default',
         fill: isLeaf ? '#4caf50' : '#2196f3',
         stroke: isLeaf ? '#2e7d32' : '#1565c0',
         'stroke-width': selected ? '4' : '2',
       };
 
-      return baseStyles;
-    };
+      return [node.id, styles];
+    }));
   });
+
+  // Helper methods for template access
+  protected isNodeSelected(nodeId: string): boolean {
+    return this.nodeSelectionMap().get(nodeId) || false;
+  }
+
+  protected getNodeRadius(node: VisualNode): number {
+    return this.nodeRadiusMap().get(node.id) || 4;
+  }
+
+  protected getNodeClasses(node: VisualNode): string {
+    return this.nodeClassesMap().get(node.id) || 'node';
+  }
+
+  protected getNodeStyles(node: VisualNode): Record<string, string> {
+    return this.nodeStylesMap().get(node.id) || {};
+  }
 
   // Event handlers
   protected onNodeClick(node: VisualNode, event: MouseEvent): void {
