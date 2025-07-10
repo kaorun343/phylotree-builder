@@ -1,0 +1,94 @@
+<div class="about-modal">
+  <h2 mat-dialog-title>
+    <mat-icon>info</mat-icon>
+    About PhyloTree Builder
+  </h2>
+
+  <mat-dialog-content>
+    <div class="modal-content">
+      <p class="intro">
+        <strong>PhyloTree Builder</strong> is an interactive web application
+        designed primarily for creating educational phylogenetic tree figures
+        and teaching the concepts of phylogenetic relationships.
+      </p>
+
+      <div class="features">
+        <h3>Key Features</h3>
+        <ul>
+          <li>
+            <strong>Interactive Editing:</strong> Click to select nodes and
+            branches for real-time editing
+          </li>
+          <li>
+            <strong>Visual Customization:</strong> Adjust branch lengths,
+            colors, and widths
+          </li>
+          <li>
+            <strong>Tree Operations:</strong> Add/remove nodes, move branches,
+            and auto-collapse structures
+          </li>
+          <li>
+            <strong>Multiple Layouts:</strong> Support for 4-directional tree
+            orientations
+          </li>
+          <li>
+            <strong>Dual Modes:</strong> Author mode for editing and
+            Presentation mode for clean display
+          </li>
+          <li>
+            <strong>Export Options:</strong> Save trees as SVG or PNG images
+          </li>
+        </ul>
+      </div>
+
+      <div class="technology">
+        <h3>Built With</h3>
+        <ul>
+          <li>Angular 20 with standalone components</li>
+          <li>Angular Material UI</li>
+          <li>D3.js for tree layout algorithms</li>
+          <li>TypeScript with strict mode</li>
+          <li>Zoneless change detection for optimal performance</li>
+        </ul>
+      </div>
+
+      <div class="usage">
+        <h3>Getting Started</h3>
+        <ol>
+          <li>Switch to <strong>Author mode</strong> to begin editing</li>
+          <li>Click on nodes or branches to select and edit them</li>
+          <li>Use Ctrl+Click on branches to add new leaf nodes</li>
+          <li>Adjust tree direction and visual settings as needed</li>
+          <li>
+            Switch to <strong>Presentation mode</strong> for clean viewing
+          </li>
+        </ol>
+      </div>
+
+      <div class="purpose-info">
+        <h3>📚 Primary Purpose: Education</h3>
+        <p class="purpose-text">
+          <strong>
+            This tool is specifically designed for educational purposes to help
+            teach phylogenetic concepts and create illustrative tree diagrams.
+          </strong>
+        </p>
+        <p class="purpose-text">
+          Perfect for instructors creating teaching materials, students learning
+          about evolutionary relationships, and anyone who needs to illustrate
+          phylogenetic tree structures and concepts rather than present actual
+          research data.
+        </p>
+        <p class="purpose-text">
+          While the tool can handle real data, its strength lies in making it
+          easy to create clear, customizable tree figures for educational
+          content, presentations, and conceptual explanations.
+        </p>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="close()">Close</button>
+  </mat-dialog-actions>
+</div>
