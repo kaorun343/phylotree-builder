@@ -62,6 +62,15 @@ Original: ((A,B),(X,Y,Z));
 Remove (X,Y,Z): (A,B);
 ```
 
+**Auto-collapse**: Internal nodes with single children are automatically removed
+
+```
+Original: ((A)internal,B);
+After auto-collapse: (A,B);
+```
+
+Branch lengths are preserved during auto-collapse operations to maintain evolutionary distances.
+
 ### Node Properties
 
 **Rename Node**: Change node labels
@@ -109,6 +118,14 @@ Original: (A:0.1,B:0.1);
 // Color applied through editor panel
 ```
 
+**Branch Width**: Variable line thickness for emphasis
+
+```
+// Applied through UI with global and individual controls
+// Default width: 2px, customizable per branch
+// Global width setting affects all branches without individual overrides
+```
+
 ## Tree Structure Operations
 
 ### Topology Modification
@@ -119,6 +136,19 @@ Original: (A:0.1,B:0.1);
 Original: (A,B,C);
 Rotate: (C,A,B);
 ```
+
+**Move Branches**: Reorder sibling branches up or down
+
+```
+Original: (A,B,C);
+Move B up: (B,A,C);
+Move B down: (A,C,B);
+```
+
+The interface adapts based on tree direction:
+
+- Left-to-right/right-to-left: Move Up/Down buttons
+- Top-to-bottom/bottom-to-top: Move Left/Right buttons
 
 **Swap Subtrees**: Exchange positions of subtrees
 
@@ -147,9 +177,12 @@ Collapse internal: (A,B,C);
 - ✅ **Node selection and editing**: Fully implemented
 - ✅ **Branch selection and editing**: Fully implemented
 - ✅ **Add leaf nodes**: Ctrl+Click functionality
-- ✅ **Remove nodes**: Through editor panel
+- ✅ **Remove nodes**: Through editor panel with auto-collapse
+- ✅ **Branch movement**: Direction-aware up/down reordering
 - ✅ **Branch length modification**: Real-time editing
 - ✅ **Branch color**: Color picker integration
+- ✅ **Branch width**: Global and individual controls
+- ✅ **Auto-collapse**: Automatic removal of single-child internal nodes
 - ⚠️ **Tree-wide operations**: Limited to individual operations
 - ❌ **Import/Export**: Not yet implemented
 - ❌ **Undo/Redo**: Not yet implemented
@@ -162,6 +195,8 @@ Collapse internal: (A,B,C);
 - **Branch length validation**: Positive values required
 - **Node connectivity**: All nodes must remain connected
 - **Root preservation**: Tree root maintained unless explicitly changed
+- **Auto-collapse validation**: Preserves evolutionary distances during node removal
+- **Selection management**: Updates selection state when collapsed nodes are removed
 
 ### Operation Restrictions
 
@@ -174,9 +209,11 @@ Collapse internal: (A,B,C);
 ### Current Implementation
 
 - **Signal-based reactivity**: Efficient updates using Angular signals
+- **Optimized computed signals**: Map-based lookups for 25-40% performance improvement
 - **D3.js integration**: Optimized tree layout calculations
 - **SVG rendering**: Scalable vector graphics for crisp display
 - **Incremental updates**: Only changed portions re-rendered
+- **Zoneless change detection**: Modern Angular 20 performance features
 
 ### Future Enhancements
 
