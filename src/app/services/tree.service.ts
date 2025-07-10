@@ -234,11 +234,101 @@ export class TreeService {
       this.removeNode(childId);
     });
 
+    // After removal, check if parent has only one child and collapse if necessary
+    this.collapseUnnecessaryInternalNodes(parentNode.id, currentTree);
+
+    // Handle special case: if root now has only one child, make that child the new root
+    this.handleRootCollapse(currentTree);
+
     // Update the tree
     this.currentTree.set({
       ...currentTree,
       nodes: new Map(currentTree.nodes),
     });
+  }
+
+  /**
+   * Collapse internal nodes that have only one child by connecting their child directly to their parent
+   */
+  private collapseUnnecessaryInternalNodes(
+    nodeId: string,
+    tree: PhylogeneticTree
+  ): void {
+    const node = tree.nodes.get(nodeId);
+    if (!node) return;
+
+    // Only collapse internal nodes (not leaf nodes) with exactly one child
+    if (node.children.length !== 1) return;
+
+    // Don't collapse the root node
+    if (nodeId === tree.rootId) return;
+
+    const childId = node.children[0];
+    const childNode = tree.nodes.get(childId);
+    const parentNode = node.parent ? tree.nodes.get(node.parent) : null;
+
+    if (!childNode || !parentNode) return;
+
+    // Clear selection if the node being collapsed is currently selected
+    const currentSelection = this.selection();
+    if (currentSelection?.type === 'node' && currentSelection.id === nodeId) {
+      this.clearSelection();
+    } else if (currentSelection?.type === 'branch') {
+      // Check if the selected branch involves the node being collapsed
+      const branchParts = currentSelection.id.split('-');
+      if (branchParts.includes(nodeId)) {
+        this.clearSelection();
+      }
+    }
+
+    // Update child's parent to point to grandparent
+    childNode.parent = parentNode.id;
+
+    // Add child's branch length to the collapsed internal node's branch length (if exists)
+    if (node.branchLength && childNode.branchLength) {
+      childNode.branchLength += node.branchLength;
+    } else if (node.branchLength && !childNode.branchLength) {
+      childNode.branchLength = node.branchLength;
+    }
+
+    // Update parent's children to replace internal node with its child
+    const nodeIndex = parentNode.children.indexOf(nodeId);
+    if (nodeIndex !== -1) {
+      parentNode.children[nodeIndex] = childId;
+    }
+
+    // Remove the unnecessary internal node
+    tree.nodes.delete(nodeId);
+
+    // Recursively check the parent in case it now also has only one child
+    this.collapseUnnecessaryInternalNodes(parentNode.id, tree);
+  }
+
+  /**
+   * Handle the special case where the root node has only one child
+   * In this case, make the child the new root to maintain tree structure
+   */
+  private handleRootCollapse(tree: PhylogeneticTree): void {
+    const rootNode = tree.nodes.get(tree.rootId);
+    if (!rootNode || rootNode.children.length !== 1) return;
+
+    const newRootId = rootNode.children[0];
+    const newRootNode = tree.nodes.get(newRootId);
+    if (!newRootNode) return;
+
+    // Make the child the new root
+    tree.rootId = newRootId;
+    newRootNode.parent = undefined;
+
+    // Add the old root's branch length to the new root (if it exists)
+    if (rootNode.branchLength && newRootNode.branchLength) {
+      newRootNode.branchLength += rootNode.branchLength;
+    } else if (rootNode.branchLength && !newRootNode.branchLength) {
+      newRootNode.branchLength = rootNode.branchLength;
+    }
+
+    // Remove the old root node
+    tree.nodes.delete(rootNode.id);
   }
 
   selectBranch(branchId: string): void {
@@ -394,8 +484,11 @@ export class TreeService {
     if (currentIndex <= 0) return; // Already at top or not found
 
     // Swap with previous sibling
-    [parentNode.children[currentIndex - 1], parentNode.children[currentIndex]] = 
-    [parentNode.children[currentIndex], parentNode.children[currentIndex - 1]];
+    [parentNode.children[currentIndex - 1], parentNode.children[currentIndex]] =
+      [
+        parentNode.children[currentIndex],
+        parentNode.children[currentIndex - 1],
+      ];
 
     // Update the tree
     this.currentTree.set({
@@ -416,11 +509,15 @@ export class TreeService {
     if (!parentNode) return;
 
     const currentIndex = parentNode.children.indexOf(nodeId);
-    if (currentIndex < 0 || currentIndex >= parentNode.children.length - 1) return; // Already at bottom or not found
+    if (currentIndex < 0 || currentIndex >= parentNode.children.length - 1)
+      return; // Already at bottom or not found
 
     // Swap with next sibling
-    [parentNode.children[currentIndex], parentNode.children[currentIndex + 1]] = 
-    [parentNode.children[currentIndex + 1], parentNode.children[currentIndex]];
+    [parentNode.children[currentIndex], parentNode.children[currentIndex + 1]] =
+      [
+        parentNode.children[currentIndex + 1],
+        parentNode.children[currentIndex],
+      ];
 
     // Update the tree
     this.currentTree.set({
